@@ -1,0 +1,18 @@
+{
+  "hosting": {
+    "public": "build",
+    "site": "admin-zone",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      ".env"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+@import '../variables';
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100vh;
+  width: 8%;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  background-color: $pets-yellow;
+  transition: width 0.3s ease;
+  position: absolute;
+
+  .logo-nav {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    justify-content: flex-start;
+    font-size: 1.5rem;
+    width: fit-content;
+
+    img {
+      height: 10vh;
+      min-height: max-content;
+      width: auto;
+    }
+  }
+
+  .items-nav>ul>li>div>p {
+    display: none;
+    margin: 0;
+  }
+
+  .items-nav>ul>li {
+    margin: 1rem 0;
+  }
+
+  &:hover {
+    width: 15%;
+
+    .items-nav>ul>li>div>p {
+      display: flex;
+    }
+
+  }
+
+  .item-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+  }
+
+  .item-container:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  img {
+    height: auto;
+    min-height: max-content;
+    width: 2vw;
+    object-fit: cover;
+  }
+
+  .items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+}

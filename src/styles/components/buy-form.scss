@@ -1,0 +1,11 @@
+.buy-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .row {
+    width: 100%;
+  }
+}

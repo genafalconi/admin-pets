@@ -1,0 +1,35 @@
+.month-year-picker {
+  gap: 0.5rem;
+}
+
+.select-picker {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.month-select,
+.year-select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.month-select {
+  width: 150px;
+}
+
+.year-select {
+  width: 100px;
+}
+
+.month-select:focus,
+.year-select:focus {
+  outline: none;
+  border-color: #3366ff;
+  box-shadow: 0 0 5px #3366ff;
+}
+
+option {
+  color: #333;
+}
