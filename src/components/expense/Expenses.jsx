@@ -1,21 +1,20 @@
 import { useCallback, useEffect, useState } from "react";
 import { Accordion, Placeholder, Card } from "react-bootstrap";
-import ProductsTable from "../sells/ProductsTable";
 import { useDispatch, useSelector } from "react-redux";
-import { GET_PAGINATED_BUYS } from "../../redux/actions";
+import { GET_PAGINATED_EXPENSES } from "../../redux/actions";
 import LazyComponent from "../../helpers/lazyComponents";
 import '../../styles/components/sell-forms.scss';
 import CustomPagination from "../atomic/CustomPagination";
 
-export default function Buys() {
+export default function Expenses() {
   const dispatch = useDispatch();
-  const { buys, total_pages, total_movements } = useSelector((state) => state.adminReducer);
+  const { expenses, total_pages, total_movements } = useSelector((state) => state.adminReducer);
 
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const getBuys = useCallback(() => {
-    dispatch(GET_PAGINATED_BUYS(currentPage)).then((res) => {
+  const getExpenses = useCallback(() => {
+    dispatch(GET_PAGINATED_EXPENSES(currentPage)).then((res) => {
       if (res.payload) setIsLoading(false);
     });
   }, [dispatch, currentPage]);
@@ -36,35 +35,28 @@ export default function Buys() {
 
   useEffect(() => {
 
-  }, [buys])
+  }, [expenses])
 
   useEffect(() => {
-    getBuys();
-  }, [getBuys]);
+    getExpenses();
+  }, [getExpenses]);
 
   return (
-    <Card className="ms-3">
+    <Card>
       <Card.Body>
-        <Card.Title className="registry-title">Registro - Total: {total_movements === 0 ? buys?.length : total_movements}</Card.Title>
+        <Card.Title className="registry-title">Registro - Total: {total_movements === 0 ? expenses?.length : total_movements}</Card.Title>
         <Card>
           <Card.Title className="d-flex w-100 card-title m-0 p-1 justify-content-around h5">
             <p>Fecha</p>
-            <p>Total</p>
+            <p>Tipo</p>
           </Card.Title>
         </Card>
         {!isLoading ? (
           <>
-            {buys?.length !== 0 ? (
+            {expenses?.length !== 0 ? (
               <>
                 <Accordion key="accordion-sells" className="accordion-sells">
-                  {buys?.map((elem) => {
-                    const updatedProducts = elem.products?.map((subproduct) => ({
-                      ...subproduct.subproduct,
-                      buy_price: subproduct.subproduct?.buy_price,
-                      size: subproduct.subproduct?.size,
-                      quantity: subproduct.quantity
-                    }));
-
+                  {expenses?.map((elem) => {
                     return (
                       <Accordion.Item key={elem._id} eventKey={elem._id}>
                         <Accordion.Header>
@@ -72,12 +64,15 @@ export default function Buys() {
                             <h5>{formatDate(elem.date)}</h5>
                           </div>
                           <div className="col sell-header-col">
-                            <h5>${elem.total_buy?.toFixed(2)}</h5>
+                            <h5>${elem.type}</h5>
                           </div>
                         </Accordion.Header>
                         <Accordion.Body>
                           <LazyComponent>
-                            <ProductsTable products={updatedProducts} totalProducts={elem.total_buy} isSell={false} />
+                            <div>
+                              <p>{elem.description}</p>
+                              <p>{elem.total}</p>
+                            </div>
                           </LazyComponent>
                         </Accordion.Body>
                       </Accordion.Item>
@@ -87,7 +82,7 @@ export default function Buys() {
                 <CustomPagination currentPage={currentPage} totalPages={total_pages} handlePageClick={handlePageClick} />
               </>
             ) : (
-              <h2 className="fs-4 mt-2">No hay compras</h2>
+              <h2 className="fs-4 mt-2">No hay gastos</h2>
             )}
           </>
         ) : (

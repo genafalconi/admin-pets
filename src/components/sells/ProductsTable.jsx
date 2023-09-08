@@ -2,6 +2,7 @@ import { Table } from "react-bootstrap";
 import '../../styles/components/sell-forms.scss'
 
 export default function ProductsTable({ products, totalProducts, isSell }) {
+
   return (
     <Table striped bordered hover size="sm" variant="dark" className='product-table mt-3'>
       <thead>

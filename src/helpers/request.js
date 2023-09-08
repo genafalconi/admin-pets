@@ -10,9 +10,9 @@ export const request = async (method, url, params, data) => {
     url: url,
     params: params,
     data: data,
-    // headers: {
-    //   'Authorization': `Bearer ${token}`
-    // }
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   }
 
   try {

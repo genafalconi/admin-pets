@@ -82,7 +82,9 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
         address_id: '',
         payment_type: paymentsType.CASH
       })
-      // inputUser.current.value = ''
+      if (inputUser.current) {
+        inputUser.current.value = '';
+      }
     }
     // eslint-disable-next-line
   }, [sellFullData, setValidSellForm])
@@ -98,6 +100,7 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
         }}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
+
         }}
       >
         {({

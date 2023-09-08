@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { Form, Button, Row, Card } from 'react-bootstrap';
+import { Form, Button, Row, Spinner, Modal } from 'react-bootstrap';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import '../../styles/components/buy-form.scss'
@@ -27,6 +27,8 @@ export default function BuyForm() {
   });
   const [validProductForm, setValidProductForm] = useState(false);
   const [finalizeForm, setFinalizeForm] = useState(false);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
 
   const validationSchema = yup.object().shape({
     date: yup.date(),
@@ -43,6 +45,7 @@ export default function BuyForm() {
   };
 
   const handleSubmitBuy = useCallback(() => {
+    setIsLoadingButton(true);
     dispatch(CREATE_MANUALLY_BUY(buyFullData))
       .then((res) => {
         if (res.payload?.success) {
@@ -50,17 +53,15 @@ export default function BuyForm() {
             title: 'Compra creada',
             icon: 'success'
           })
-          setBuyFullData({
-            date: getCurrentDate(),
-            discount: false
-          })
+          setBuyFullData({})
           setFinalizeForm(false)
         }
+        setIsLoadingButton(false);
       })
   }, [buyFullData, dispatch])
 
   useEffect(() => {
-    if (buyFullData.date.length !== 0 && validProductForm) setFinalizeForm(true)
+    if (Object.keys(buyFullData).length !== 0 && validProductForm) setFinalizeForm(true)
   }, [buyFullData, validProductForm])
 
   return (
@@ -68,71 +69,88 @@ export default function BuyForm() {
       <div className="title">
         <h1>Compras</h1>
       </div>
-      <div className="content-container">
-        <Card className='ms-3 mb-3'>
-          <Card.Body as={Row}>
-            <div className="col">
-              <ProductForm sellFullData={buyFullData} setSellFullData={setBuyFullData} setValidProductForm={setValidProductForm} isSell={false} />
-            </div>
-            <div className="col-3">
-              <Formik
-                validationSchema={validationSchema}
-                initialValues={{
-                  date: getCurrentDate(),
-                  discount: false
-                }}
-                onSubmit={(values, { resetForm }) => {
-                  resetForm();
-                }}
-              >
-                {({
-                  handleSubmit,
-                  handleChange,
-                  handleBlur,
-                  setFieldValue,
-                  values,
-                  touched,
-                  isValid,
-                  errors
-                }) => (
-                  <Form noValidate onSubmit={handleSubmit} className='buy-form'>
-                    <Form.Group as={Row}>
-                      <Form.Label>Fecha</Form.Label>
-                      <Form.Group className='input-form-group'>
-                        <Form.Control
-                          type="date"
-                          placeholder="Date"
-                          name="date"
-                          value={values.date}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          isInvalid={touched.date && !!errors.date}
-                        />
-                      </Form.Group>
-                      <Form.Control.Feedback type="invalid">
-                        {errors.date}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                      <Form.Check
-                        type="checkbox"
-                        label="Bonificacion"
-                        name="discount"
-                        checked={values.discount}
-                        onChange={(e) => handleDiscountChange(e, setFieldValue)}
+      <div className="create-buy">
+        <Button onClick={() => setShowCreate(!showCreate)}>Cargar</Button>
+      </div >
+      <Modal
+        show={showCreate}
+        onHide={() => setShowCreate(!showCreate)}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        className="modal-creation-buy"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Carga de ventas
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='modal-buy-body'>
+          <div className="col">
+            <ProductForm sellFullData={buyFullData} setSellFullData={setBuyFullData} setValidProductForm={setValidProductForm} isSell={false} />
+          </div>
+          <div className="col-3">
+            <Formik
+              validationSchema={validationSchema}
+              initialValues={{
+                date: getCurrentDate(),
+                discount: false
+              }}
+              onSubmit={(values, { resetForm }) => {
+                resetForm();
+              }}
+            >
+              {({
+                handleSubmit,
+                handleChange,
+                handleBlur,
+                setFieldValue,
+                values,
+                touched,
+                isValid,
+                errors
+              }) => (
+                <Form noValidate onSubmit={handleSubmit} className='buy-form'>
+                  <Form.Group as={Row}>
+                    <Form.Label>Fecha</Form.Label>
+                    <Form.Group className='input-form-group'>
+                      <Form.Control
+                        type="date"
+                        placeholder="Date"
+                        name="date"
+                        value={values.date}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        isInvalid={touched.date && !!errors.date}
                       />
                     </Form.Group>
-                    <Form.Group as={Row}>
-                      <Button variant='success' onClick={handleSubmitBuy} disabled={!finalizeForm}>Finalizar</Button>
-                    </Form.Group>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-          </Card.Body>
-        </Card>
-        <Buys />
-      </div>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.date}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Check
+                      type="checkbox"
+                      label="Bonificacion"
+                      name="discount"
+                      checked={values.discount}
+                      onChange={(e) => handleDiscountChange(e, setFieldValue)}
+                    />
+                  </Form.Group>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className='modal-buy-footer'>
+          <Button style={{ width: '100%' }} variant='success' onClick={handleSubmitBuy} disabled={!finalizeForm}>
+            {
+              isLoadingButton ? <Spinner animation="border" size="sm" />
+                : 'Finalizar'
+            }
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Buys />
     </>
   );
 };

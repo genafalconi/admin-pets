@@ -9,7 +9,7 @@ export default function ChartComponent({ totalImportBuy, totalImportSell, totalE
     animationEnabled: true,
     subtitles: [
       {
-        text: `${percentage}%`,
+        text: `${percentage > 0 ? percentage : 0}%`,
         verticalAlign: 'center',
         fontSize: 24,
         dockInsidePlotArea: true,

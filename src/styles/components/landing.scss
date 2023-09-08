@@ -1,0 +1,85 @@
+@import '../variables';
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+header {
+  padding: 1rem;
+}
+
+header div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+header img {
+  width: 100px;
+  max-width: 100px;
+  object-fit: contain;
+}
+
+header h2 {
+  font-size: 2rem;
+  color: $pets-blue;
+}
+
+main {
+  margin: 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.feature {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  background-color: #D7D7D7;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: $pets-blue;
+  margin-bottom: 1rem;
+}
+
+p {
+  white-space: normal;
+  font-size: 1rem;
+  color: $text-color;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+  padding: 1rem;
+  color: $text-color;
+  text-align: center;
+  width: 100%;
+}
+
+footer p {
+  margin: 0;
+}

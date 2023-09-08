@@ -1,4 +1,4 @@
-import { Badge, Card, Placeholder, Spinner, Table } from "react-bootstrap";
+import { Badge, Card, Spinner, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
 import { GET_DELIVERY_BY_WEEK, GET_ORDER_DETAILS, UPDATE_ORDER_DELIVER_STATUS } from "../../redux/actions";
@@ -17,7 +17,6 @@ export default function Delivery() {
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const [isLoadingStatus, setIsLoadingStatus] = useState(false);
   const [showOrderDetails, setShowOrderDetails] = useState(null);
-
 
   const getDeliverysByWeek = useCallback(() => {
     dispatch(GET_DELIVERY_BY_WEEK()).then((res) => {
@@ -75,52 +74,59 @@ export default function Delivery() {
               <Card className={showOrderDetails ? 'deliver-card' : 'deliver-card alone'}>
                 <Card.Body>
                   <Card.Title>{formatDate(week?.start)} al {formatDate(week?.end)}</Card.Title>
-                  <Table striped bordered hover size="sm" variant="dark" className="">
-                    <thead>
-                      <tr>
-                        <th>Dia</th>
-                        <th>Cliente</th>
-                        <th>Estado</th>
-                        <th>Entrega</th>
-                        <th>Detalles</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {deliverys?.map((elem) => (
-                        <tr key={elem._id}>
-                          <td>{formatDate(elem.offer.date)}</td>
-                          <td>{elem.user.full_name}</td>
-                          <td>
-                            <Badge bg={handleBadge(elem?.status)?.variant} className="ms-2">
-                              {handleBadge(elem?.status)?.text}
-                            </Badge>
-                          </td>
-                          <td>
-                            <Badge pill bg={handleBadge(elem.status).variant} onClick={() => handleDeliveryStatus(elem._id, elem.status)}>
-                              {isLoadingStatus === elem._id ? <Spinner animation="border" size="sm" /> : handleStatusOrder(elem.status)}
-                            </Badge>
-                          </td>
-                          <td>
-                            {isLoadingDetails === elem._id ? (
-                              <Spinner animation="border" size="sm" />
-                            ) : (
-                              <TbListDetails onClick={() => handleDetails(elem._id)} />
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                  {
+                    deliverys.length === 0 ? (
+                      <h2 className="fs-4 mt-2">No hay entregas esta semana</h2>
+                    ) : (
+                      <Table striped bordered hover size="sm" variant="dark">
+                        <thead>
+                          <tr>
+                            <th>Dia</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Entrega</th>
+                            <th>Detalles</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {
+
+                            deliverys.map((elem) => (
+                              <tr key={elem._id}>
+                                <td>{formatDate(elem.offer.date)}</td>
+                                <td>{elem.user.full_name}</td>
+                                <td>
+                                  <Badge bg={handleBadge(elem?.status)?.variant} className="ms-2">
+                                    {handleBadge(elem?.status)?.text}
+                                  </Badge>
+                                </td>
+                                <td>
+                                  <Badge pill bg={handleBadge(elem.status).variant} onClick={() => handleDeliveryStatus(elem._id, elem.status)}>
+                                    {isLoadingStatus === elem._id ? <Spinner animation="border" size="sm" /> : handleStatusOrder(elem.status)}
+                                  </Badge>
+                                </td>
+                                <td>
+                                  {isLoadingDetails === elem._id ? (
+                                    <Spinner animation="border" size="sm" />
+                                  ) : (
+                                    <TbListDetails onClick={() => handleDetails(elem._id)} />
+                                  )}
+                                </td>
+                              </tr>
+                            ))
+                          }
+                        </tbody>
+                      </Table>
+                    )
+                  }
                 </Card.Body>
               </Card>
               {showOrderDetails && <OrderDetail />}
             </>
           ) : (
-            <Placeholder as={Card} animation="glow" className="accordion-orders">
-              <Placeholder as={Card.Body} animation="glow">
-                <Placeholder xs={11} />
-              </Placeholder>
-            </Placeholder>
+            <div className="loading">
+              <Spinner animation="border" size="lg" />
+            </div>
           )
         }
       </div>

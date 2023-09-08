@@ -147,7 +147,7 @@ export default function ProductForm({ sellFullData, setSellFullData, setValidPro
                     {errors.product}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group as={Col} controlId="validationFormikQuantity" className='input-form-group gap-2'>
+                <Form.Group as={Col} controlId="validationFormikQuantity" className='input-form-group gap-2 flex-row'>
                   <Form.Label className='m-0'>Cantidad</Form.Label>
                   <Form.Control
                     type="number"

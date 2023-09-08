@@ -5,10 +5,55 @@
   }
 
 }
+
 .name-input {
   width: 100% !important;
 }
 
 .card-prods {
   background-color: none;
+}
+
+.badge-product {
+  cursor: pointer;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.search-box input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 15rem;
+}
+
+.search-box button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-box button:hover {
+  background-color: #0056b3;
+}
+
+.prod-image {
+  img {
+    max-height: 4rem;
+  }
+}
+
+.subprod-item {
+  cursor: pointer;
 }

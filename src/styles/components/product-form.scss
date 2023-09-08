@@ -1,0 +1,124 @@
+.modal-dialog {
+  width: 45rem !important;
+  max-width: 100% !important;
+}
+
+.product-form,
+.subproduct-form {
+  .col {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1rem;
+
+    .form-label {
+      width: 4rem;
+    }
+  }
+}
+
+.select-form {
+  width: 15rem;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-form {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button-charge {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.create-product>button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-product>button:hover {
+  background-color: #0056b3;
+}
+
+.full-label.form-label {
+  width: 7rem !important;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.subproduct-form {
+  .row {
+    margin-bottom: 0.5rem;
+  }
+
+  .product-label {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .input-form {
+    width: auto !important;
+    max-width: 8rem;
+  }
+
+  .input-small {
+    width: 4rem;
+  }
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin: 0.5rem;
+}
+
+.subprod-table {
+  margin-top: 1rem;
+}
+
+.RxReload {
+  cursor: pointer;
+  background-color: #aeaeae;
+  border-radius: 5px;
+  padding: 0.5rem;
+  color: #fff;
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: rgb(79, 79, 79);
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(64, 64, 64, 0.5);
+  }
+}

@@ -7,12 +7,12 @@ export default function NavItem({ Icon, name, img }) {
 
   const navigate = useNavigate()
 
-  const handleSeccion = () => {
+  const handleSection = () => {
     navigate(`/${name.toLowerCase()}`);
   }
 
   return (
-    <div className="item-container" id={name} onClick={handleSeccion}>
+    <div className="item-container" id={name} onClick={handleSection}>
       {Icon ? Icon : <AdvancedImage cldImg={cloudinaryImg(img)} alt={name} />}
       <p>{name}</p>
     </div>
