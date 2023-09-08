@@ -5,7 +5,7 @@ import AutoLogout from './components/atomic/AutoLogout';
 import Nav from './components/admin/Nav';
 import LazyComponent from './helpers/lazyComponents';
 import { Route, Routes } from 'react-router-dom';
-import ValidateSesion from './helpers/validateSesion';
+// import ValidateSesion from './helpers/validateSesion';
 import FullForm from './components/sells/FullForm';
 import BuyForm from './components/buys/BuyForm';
 import UserForm from './components/users/UserForm';
