@@ -11,3 +11,51 @@
 .user-card {
   width: 60%;
 }
+
+.user-form {
+  .row {
+    margin: 0.5rem 0;
+  }
+}
+
+.input-next-buy {
+  max-width: 4rem;
+}
+
+.invalid-td {
+  position: relative;
+}
+
+.input-next-buy {
+  border: 1px solid red;
+  padding: 5px;
+}
+
+.invalid-text {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  color: red;
+  font-weight: bold;
+}
+
+.create-user {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.5rem;
+}
+
+.create-user>button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-user>button:hover {
+  background-color: #0056b3;
+}

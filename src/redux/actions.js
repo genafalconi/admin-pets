@@ -148,6 +148,28 @@ export const GET_PAGINATED_PRODUCTS = createAsyncThunk(
   }
 )
 
+export const CREATE_MANUALLY_EXPENSE = createAsyncThunk(
+  'CREATE_MANUALLY_EXPENSE', async (expensedata) => {
+    try {
+      const res = await request(req_constants.POST, `${REACT_APP_ADMIN}/admin/manual-expense`, null, expensedata)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const GET_PAGINATED_EXPENSES = createAsyncThunk(
+  'GET_PAGINATED_EXPENSES', async (page) => {
+    try {
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/expenses?page=${page}`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
 export const CHANGE_SUBPRODUCT_ACTIVE = createAsyncThunk(
   'CHANGE_SUBPRODUCT_ACTIVE', async (subprod_id) => {
     try {
@@ -248,6 +270,83 @@ export const UPDATE_ORDER_DELIVER_STATUS = createAsyncThunk(
   'UPDATE_ORDER_DELIVER_STATUS', async ({ order_id, status }) => {
     try {
       const res = await request(req_constants.PUT, `${REACT_APP_ADMIN}/admin-atomic/order-status/${order_id}?status=${status}`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const GET_PRODUCTS_SEARCH = createAsyncThunk(
+  'GET_PRODUCTS_SEARCH', async ({ page, text }) => {
+    try {
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/product-search?page=${page}&text=${text}`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const GET_SUBPRODUCT_DETAILS = createAsyncThunk(
+  'GET_SUBPRODUCT_DETAILS', async (subprod_id) => {
+    try {
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/subprod/${subprod_id}`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const GET_CAROUSEL_ITEMS = createAsyncThunk(
+  'GET_CAROUSEL_ITEMS', async (type) => {
+    try {
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/landing-images?type=CAROUSEL`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const GET_PRODUCTS_TYPES = createAsyncThunk(
+  'GET_PRODUCTS_TYPES', async () => {
+    try {
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin-atomic/product-types`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const CREATE_PRODUCT = createAsyncThunk(
+  'CREATE_PRODUCT', async (product) => {
+    try {
+      const res = await request(req_constants.POST, `${REACT_APP_ADMIN}/admin/create-product`, null, product)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const CREATE_SUBPRODUCT = createAsyncThunk(
+  'CREATE_SUBPRODUCT', async (subproduct) => {
+    try {
+      const res = await request(req_constants.POST, `${REACT_APP_ADMIN}/admin/create-subproduct`, null, subproduct)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const UPDATE_USER_NEXT_BUY = createAsyncThunk(
+  'UPDATE_USER_NEXT_BUY', async (next_buy) => {
+    try {
+      const res = await request(req_constants.PUT, `${REACT_APP_ADMIN}/admin-atomic/next-buy`, null, next_buy)
       return res?.data
     } catch (error) {
       return errorHandler(error)

@@ -12,6 +12,10 @@ import UserForm from './components/users/UserForm';
 import Products from './components/products/Products';
 import Reports from './components/reports/Report';
 import Delivery from './components/delivery/Delivery';
+import Landing from './components/admin/Landing';
+import ExpenseForm from './components/expense/ExpenseForm';
+import ProductDetail from './components/products/ProductDetail';
+import LandingManager from './components/landing/LandingManager';
 
 function App() {
   return (
@@ -21,12 +25,16 @@ function App() {
       <Nav />
       <div className='content-page'>
         <Routes>
+          <Route exact path="/" element={<LazyComponent><Landing /></LazyComponent>} />
           <Route exact path="/entregas" element={<LazyComponent><Delivery /></LazyComponent>} />
           <Route exact path="/ventas" element={<LazyComponent><FullForm /></LazyComponent>} />
           <Route exact path="/compras" element={<LazyComponent><BuyForm /></LazyComponent>} />
           <Route exact path="/clientes" element={<LazyComponent><UserForm /></LazyComponent>} />
+          <Route exact path="/gastos" element={<LazyComponent><ExpenseForm /></LazyComponent>} />
           <Route exact path="/productos" element={<LazyComponent><Products /></LazyComponent>} />
           <Route exact path="/reportes" element={<LazyComponent><Reports /></LazyComponent>} />
+          <Route exact path="/landing" element={<LazyComponent><LandingManager /></LazyComponent>} />
+          <Route exact path="/productos/:subprod_id" element={<LazyComponent><ProductDetail /></LazyComponent>} />
         </Routes>
       </div>
     </div >

@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Accordion, Placeholder, Pagination, Card } from "react-bootstrap";
+import { Accordion, Placeholder, Card } from "react-bootstrap";
 import ProductsTable from "./ProductsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_PAGINATED_ORDERS } from "../../redux/actions";
 import LazyComponent from "../../helpers/lazyComponents";
 import '../../styles/components/sell-forms.scss';
+import CustomPagination from "../atomic/CustomPagination";
 
 export default function Sells() {
   const dispatch = useDispatch();
@@ -34,16 +35,11 @@ export default function Sells() {
   };
 
   useEffect(() => {
-    if (sells?.length === 0) {
-      getSells();
-    } else {
-      setIsLoading(false)
-    }
-    // eslint-disable-next-line
+    getSells();
   }, [getSells]);
 
   return (
-    <Card className="ms-3">
+    <Card>
       <Card.Body>
         <Card.Title className="registry-title">Registro - Total: {total_movements === 0 ? sells?.length : total_movements}</Card.Title>
         <Card>
@@ -81,28 +77,14 @@ export default function Sells() {
                         </Accordion.Header>
                         <Accordion.Body>
                           <LazyComponent>
-                            <ProductsTable products={updatedProducts} totalProducts={elem.cart?.total_price} />
+                            <ProductsTable products={updatedProducts} totalProducts={elem.cart?.total_price} isSell={true} />
                           </LazyComponent>
                         </Accordion.Body>
                       </Accordion.Item>
                     );
                   })}
                 </Accordion>
-                <Pagination className="mb-0">
-                  <Pagination.First onClick={() => handlePageClick(1)} />
-                  <Pagination.Prev onClick={() => handlePageClick(currentPage - 1)} />
-                  {[...Array(total_pages)].map((_, i) => (
-                    <Pagination.Item
-                      key={i}
-                      active={currentPage === i + 1}
-                      onClick={() => handlePageClick(i + 1)}
-                    >
-                      {i + 1}
-                    </Pagination.Item>
-                  ))}
-                  <Pagination.Next onClick={() => handlePageClick(currentPage + 1)} />
-                  <Pagination.Last onClick={() => handlePageClick(total_pages)} />
-                </Pagination>
+                <CustomPagination currentPage={currentPage} totalPages={total_pages} handlePageClick={handlePageClick}/>
               </>
             ) : (
               <h2 className="fs-4 mt-2">No hay ventas</h2>

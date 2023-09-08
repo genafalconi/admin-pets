@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ProductForm from "./ProductsForm";
 import SellsForm from "./SellsForm";
-import { Button, Card } from "react-bootstrap";
+import { Button, Modal, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { CREATE_MANUALLY_SELL } from "../../redux/actions";
 import Swal from "sweetalert2";
@@ -16,8 +16,11 @@ export default function FullForm() {
   const [validProductForm, setValidProductForm] = useState(false);
   const [validSellForm, setValidSellForm] = useState(false);
   const [finalizeForm, setFinalizeForm] = useState(false);
+  const [isLoadingButton, setIsLoadingButton] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
 
-  const handleSubmitSell = () => {
+  const handleSubmitSell = useCallback(() => {
+    setIsLoadingButton(true)
     dispatch(CREATE_MANUALLY_SELL(sellFullData))
       .then((res) => {
         if (res.payload?.success) {
@@ -28,8 +31,9 @@ export default function FullForm() {
           setSellFullData({})
           setFinalizeForm(false)
         }
+        setIsLoadingButton(false)
       })
-  }
+  }, [dispatch, sellFullData])
 
   useEffect(() => {
     if (validSellForm && validProductForm) {
@@ -43,29 +47,50 @@ export default function FullForm() {
       <div className="title">
         <h1>Ventas</h1>
       </div>
-      <div className="content-container">
-        <Card className="mb-3">
-          <Card.Body>
-            <SellsForm
+      <div className="create-sell">
+        <Button onClick={() => setShowCreate(!showCreate)}>Cargar</Button>
+      </div >
+      <Modal
+        show={showCreate}
+        onHide={() => setShowCreate(!showCreate)}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        className="modal-creation-sells"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Carga de ventas
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='modal-sells-body'>
+          <SellsForm
+            sellFullData={sellFullData}
+            setSellFullData={setSellFullData}
+            setValidSellForm={setValidSellForm}
+            showCreate={showCreate}
+            setShowCreate={setShowCreate}
+          />
+          <div className="wrapform">
+            <ProductForm
               sellFullData={sellFullData}
               setSellFullData={setSellFullData}
-              setValidSellForm={setValidSellForm}
+              setValidProductForm={setValidProductForm}
+              isSell={true}
             />
-            <div className="wrapform">
-              <ProductForm
-                sellFullData={sellFullData}
-                setSellFullData={setSellFullData}
-                setValidProductForm={setValidProductForm}
-                isSell={true}
-              />
-              <div className="finalize-btn d-flex justify-content-end m-3">
-                <Button className="btn-finalize w-100" variant="success" disabled={!finalizeForm} onClick={handleSubmitSell}>Finalizar</Button>
-              </div>
-            </div>
-          </Card.Body>
-        </Card>
-        <Sells />
-      </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className='modal-sell-footer'>
+          <Button className="btn-finalize w-100" variant="success"
+            disabled={!finalizeForm}
+            onClick={handleSubmitSell}>
+            {
+              isLoadingButton ? <Spinner animation="border" size="sm" />
+                : 'Finalizar'
+            }
+          </Button>
+        </Modal.Footer>
+      </Modal >
+      <Sells />
     </>
   );
 }

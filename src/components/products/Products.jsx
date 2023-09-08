@@ -1,20 +1,31 @@
 import { useCallback, useEffect, useState } from "react";
-import { Card, Pagination, Spinner, Table, Badge } from "react-bootstrap";
+import { Card, Spinner, Table, Badge } from "react-bootstrap";
 import { BsCheck } from 'react-icons/bs';
-import { RxCross2 } from 'react-icons/rx';
+import { RxCross2, RxReload } from 'react-icons/rx';
 import { FiEdit, FiSave } from 'react-icons/fi';
 import { useDispatch, useSelector } from "react-redux";
-import { CHANGE_SUBPRODUCT_ACTIVE, CHANGE_SUBPRODUCT_HIGHLIGHT, GET_PAGINATED_PRODUCTS, UPDATE_SUBPRODUCT } from "../../redux/actions";
+import { CHANGE_SUBPRODUCT_ACTIVE, CHANGE_SUBPRODUCT_HIGHLIGHT, GET_PAGINATED_PRODUCTS, GET_PRODUCTS_SEARCH, UPDATE_SUBPRODUCT } from "../../redux/actions";
 import '../../styles/components/products.scss';
 import Swal from "sweetalert2";
+import CustomPagination from "../atomic/CustomPagination";
+import { useRef } from "react";
+import { AdvancedImage } from "@cloudinary/react";
+import { cloudinaryImg } from "../../helpers/cloudinary";
+// import { useNavigate } from "react-router-dom";
+import ProductCreation from "./ProductCreation";
+import LazyComponent from "../../helpers/lazyComponents";
 
 export default function Products() {
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const { products, total_pages, total_movements } = useSelector((state) => state.adminReducer);
 
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentProducts, setCurrentProducts] = useState(products);
+  const inputValue = useRef('');
+  const [isSearched, setIsSearched] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
 
   const getProducts = useCallback(() => {
     setIsLoading(true);
@@ -113,6 +124,20 @@ export default function Products() {
     });
   };
 
+  const searchProducts = useCallback(() => {
+    setIsLoading(true);
+    setIsSearched(true);
+    dispatch(GET_PRODUCTS_SEARCH({ page: currentPage, text: inputValue.current.value })).then((res) => {
+      if (res.payload) {
+        setIsLoading(false);
+      }
+    })
+  }, [currentPage, inputValue, dispatch])
+
+  // const handleProductDetails = (subproduct) => {
+  //   navigate(`/productos/${subproduct}`)
+  // }
+
   const validateAndSaveChanges = (updatedProducts, subprod_id) => {
     const modifiedProd = updatedProducts.find((elem) => elem.subproducts.find((sub) => sub._id === subprod_id));
     const actualProd = products.find((elem) => elem.subproducts.find((sub) => sub._id === subprod_id));
@@ -126,7 +151,6 @@ export default function Products() {
 
   const updateSubproduct = useCallback((subprod_id, dataToUpdate) => {
     const updateData = { subprod_id, dataToUpdate };
-    console.log(updateData);
     dispatch(UPDATE_SUBPRODUCT(updateData))
       .then((res) => {
         if (res.payload) {
@@ -139,18 +163,45 @@ export default function Products() {
       });
   }, [dispatch]);
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      searchProducts();
+    }
+  };
+
+  const reloadProducts = useCallback(() => {
+    getProducts()
+  }, [getProducts])
+
   useEffect(() => {
     setCurrentProducts(products);
   }, [products]);
 
   useEffect(() => {
-    getProducts();
-  }, [getProducts, currentPage]);
+    if (isSearched) {
+      searchProducts();
+    } else {
+      getProducts();
+    }
+    // eslint-disable-next-line
+  }, [getProducts, currentPage, searchProducts]);
 
   return (
     <>
       <div className="title">
         <h1>Productos</h1>
+      </div>
+      <div className="product-actions">
+        <div className="search-box">
+          <input type="text" maxLength={20} ref={inputValue} onKeyDown={handleKeyDown} />
+          <button onClick={searchProducts}>Buscar</button>
+        </div>
+        <div className="create-product">
+          <button onClick={() => setShowCreate(true)}>Crear</button>
+        </div>
+        <div className="reload-product">
+          <RxReload onClick={reloadProducts} size={25} className="RxReload" />
+        </div>
       </div>
       <Card>
         <Card.Body>
@@ -166,7 +217,7 @@ export default function Products() {
                       <Table striped size="sm" bordered hover variant="dark">
                         <thead>
                           <tr>
-                            <th>Id</th>
+                            <th>Imagen</th>
                             <th>Producto</th>
                             <th>Tamaño</th>
                             <th>Compra</th>
@@ -181,8 +232,11 @@ export default function Products() {
                           {
                             currentProducts?.flatMap((elem) =>
                               elem.subproducts.map((subproduct) => (
-                                <tr key={subproduct._id}>
-                                  <td>{elem._id}</td>
+                                // <tr className="subprod-item" key={subproduct._id} onClick={() => handleProductDetails(subproduct._id)}>
+                                <tr className="subprod-item" key={subproduct._id}>
+                                  <td className="prod-image">
+                                    <AdvancedImage cldImg={cloudinaryImg(elem.image)} alt={elem.name} />
+                                  </td>
                                   <td>
                                     {
                                       subproduct.editable ?
@@ -219,21 +273,21 @@ export default function Products() {
                                     }
                                   </td>
                                   <td>
-                                    <Badge pill bg={subproduct.active ? 'success' : 'danger'}
+                                    <Badge className="badge-product" pill bg={subproduct.active ? 'success' : 'danger'}
                                       onClick={() => handleActiveSubproduct(subproduct._id)}>
                                       {subproduct.active ? <BsCheck /> : <RxCross2 />}
                                     </Badge>
                                   </td>
                                   <td>
-                                    <Badge pill bg={subproduct.highlight ? 'success' : 'danger'}
+                                    <Badge className="badge-product" pill bg={subproduct.highlight ? 'success' : 'danger'}
                                       onClick={() => handleHighlightSubproduct(subproduct._id)}>
                                       {subproduct.highlight ? <BsCheck /> : <RxCross2 />}
                                     </Badge>
                                   </td>
                                   <td>
                                     {
-                                      subproduct.editable ? <FiSave onClick={() => handleSaveSubproduct(subproduct._id)} />
-                                        : <FiEdit onClick={() => handleEditSubproduct(subproduct._id)} />
+                                      subproduct.editable ? <FiSave className="badge-product" onClick={() => handleSaveSubproduct(subproduct._id)} />
+                                        : <FiEdit className="badge-product" onClick={() => handleEditSubproduct(subproduct._id)} />
                                     }
                                   </td>
                                 </tr>
@@ -242,24 +296,10 @@ export default function Products() {
                           }
                         </tbody>
                       </Table>
-                      <Pagination className="mb-0">
-                        <Pagination.First onClick={() => handlePageClick(1)} />
-                        <Pagination.Prev onClick={() => handlePageClick(currentPage - 1)} />
-                        {[...Array(total_pages)].map((_, i) => (
-                          <Pagination.Item
-                            key={i}
-                            active={currentPage === i + 1}
-                            onClick={() => handlePageClick(i + 1)}
-                          >
-                            {i + 1}
-                          </Pagination.Item>
-                        ))}
-                        <Pagination.Next onClick={() => handlePageClick(currentPage + 1)} />
-                        <Pagination.Last onClick={() => handlePageClick(total_pages)} />
-                      </Pagination>
+                      <CustomPagination currentPage={currentPage} totalPages={total_pages} handlePageClick={handlePageClick} />
                     </>
                   ) : (
-                    <h2 className="fs-4 mt-2">No hay clientes</h2>
+                    <h2 className="fs-4 mt-2">No hay productos</h2>
                   )
                 }
               </>
@@ -271,6 +311,14 @@ export default function Products() {
           }
         </Card.Body>
       </Card>
+      {showCreate && (
+        <LazyComponent>
+          <ProductCreation
+            showCreate={showCreate}
+            setShowCreate={setShowCreate}
+          />
+        </LazyComponent>
+      )}
     </>
   )
 }
