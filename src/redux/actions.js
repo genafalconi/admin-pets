@@ -11,6 +11,15 @@ export const VERIFY_ADMIN_TOKEN = createAsyncThunk(
   'VERIFY_ADMIN_TOKEN', async ({ user, idtoken }) => {
     try {
       const res = await request(req_constants.GET, `${REACT_APP_AUTH}/auth/verify-admin-token?user=${user}`, null, null, idtoken);
+      if (res.data) {
+        localStorage.setItem('token', idtoken)
+        localStorage.setItem('user', user)
+        localStorage.setItem('user_auth', res.data);
+      } else {
+        localStorage.getItem('token') && localStorage.removeItem('token')
+        localStorage.getItem('user') && localStorage.removeItem('user')
+        localStorage.getItem('user_auth') && localStorage.removeItem('user_auth')
+      }
       return res?.data;
     } catch (error) {
       const firebaseError = error.message.replace('Firebase: Error', '').match(/\((.*)\)/).pop();
@@ -33,9 +42,7 @@ export const LOGOUT = createAsyncThunk(
       await firebaseAuth.signOut()
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      localStorage.removeItem('cart')
-      localStorage.getItem('reorder_cart') && localStorage.removeItem('reorder_cart')
-      localStorage.getItem('order') && localStorage.removeItem('order')
+      localStorage.setItem('user_auth', false)
 
     } catch (error) {
       const firebaseError = error.message.replace('Firebase: Error', '').match(/\((.*)\)/).pop()
@@ -211,6 +218,21 @@ export const GET_BUYS_REPORT = createAsyncThunk(
         query = `?date=${date}`
       }
       const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/report-buys${query}`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
+
+export const GET_EXPENSES_REPORT = createAsyncThunk(
+  'GET_EXPENSES_REPORT', async (date) => {
+    try {
+      let query = ''
+      if (date) {
+        query = `?date=${date}`
+      }
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/report-expenses${query}`, null, null)
       return res?.data
     } catch (error) {
       return errorHandler(error)

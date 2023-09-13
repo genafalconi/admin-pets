@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { CHANGE_SUBPRODUCT_ACTIVE, CHANGE_SUBPRODUCT_HIGHLIGHT, CREATE_MANUALLY_BUY, CREATE_MANUALLY_CLIENT, CREATE_MANUALLY_EXPENSE, CREATE_MANUALLY_SELL, CREATE_PRODUCT, CREATE_SUBPRODUCT, GET_BUYS_REPORT, GET_CAROUSEL_ITEMS, GET_DELIVERY_BY_WEEK, GET_ORDER_DETAILS, GET_PAGINATED_BUYS, GET_PAGINATED_EXPENSES, GET_PAGINATED_ORDERS, GET_PAGINATED_PRODUCTS, GET_PAGINATED_USERS, GET_PRODUCTS_SEARCH, GET_PRODUCTS_TYPES, GET_SELLS_REPORT, GET_SUBPRODUCT_DETAILS, GET_USERS_REPORT, LOGOUT, SEARCH_PRODUCTS, SEARCH_USERS, UPDATE_ORDER_DELIVER_STATUS, UPDATE_SUBPRODUCT, UPDATE_USER_NEXT_BUY, VERIFY_ADMIN_TOKEN } from "./actions"
+import { CHANGE_SUBPRODUCT_ACTIVE, CHANGE_SUBPRODUCT_HIGHLIGHT, CREATE_MANUALLY_BUY, CREATE_MANUALLY_CLIENT, CREATE_MANUALLY_EXPENSE, CREATE_MANUALLY_SELL, CREATE_PRODUCT, CREATE_SUBPRODUCT, GET_BUYS_REPORT, GET_CAROUSEL_ITEMS, GET_DELIVERY_BY_WEEK, GET_EXPENSES_REPORT, GET_ORDER_DETAILS, GET_PAGINATED_BUYS, GET_PAGINATED_EXPENSES, GET_PAGINATED_ORDERS, GET_PAGINATED_PRODUCTS, GET_PAGINATED_USERS, GET_PRODUCTS_SEARCH, GET_PRODUCTS_TYPES, GET_SELLS_REPORT, GET_SUBPRODUCT_DETAILS, GET_USERS_REPORT, LOGOUT, SEARCH_PRODUCTS, SEARCH_USERS, UPDATE_ORDER_DELIVER_STATUS, UPDATE_SUBPRODUCT, UPDATE_USER_NEXT_BUY, VERIFY_ADMIN_TOKEN } from "./actions"
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -15,6 +15,7 @@ const initialState = {
     subproduct: {},
     total_import_sell: 0,
     total_import_buy: 0,
+    total_import_expense: 0,
     month_sell: '',
     month_buy: '',
     total_profit: 0,
@@ -46,6 +47,7 @@ export const adminReducer = createReducer(initialState, (builder) => {
     builder.addCase(LOGOUT.fulfilled, (state, action) => {
         state.user = ''
         state.token = ''
+        state.user_auth = false
     })
     builder.addCase(CREATE_MANUALLY_SELL.fulfilled, (state, action) => {
         state.sells.push(action.payload.data)
@@ -59,6 +61,7 @@ export const adminReducer = createReducer(initialState, (builder) => {
         state.buys.push(action.payload.data)
     })
     builder.addCase(GET_PAGINATED_BUYS.fulfilled, (state, action) => {
+        console.log(action.payload)
         state.buys = action.payload.movements
         state.total_movements = action.payload.total_movements
         state.total_pages = action.payload.total_pages
@@ -88,6 +91,11 @@ export const adminReducer = createReducer(initialState, (builder) => {
     builder.addCase(GET_BUYS_REPORT.fulfilled, (state, action) => {
         state.buys = action.payload
         state.total_import_buy = action.payload.total_import
+        state.month_buy = action.payload.month
+    })
+    builder.addCase(GET_EXPENSES_REPORT.fulfilled, (state, action) => {
+        state.expenses = action.payload
+        state.total_import_expense = action.payload.total_import
         state.month_buy = action.payload.month
     })
     builder.addCase(GET_SELLS_REPORT.fulfilled, (state, action) => {

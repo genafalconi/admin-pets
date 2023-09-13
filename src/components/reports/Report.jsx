@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_BUYS_REPORT, GET_SELLS_REPORT, GET_USERS_REPORT } from '../../redux/actions';
+import { GET_BUYS_REPORT, GET_EXPENSES_REPORT, GET_SELLS_REPORT, GET_USERS_REPORT } from '../../redux/actions';
 import { Card, Row, Table } from 'react-bootstrap';
 import MonthYearPicker from '../atomic/MonthYearPicker';
 import '../../styles/components/reports.scss'
@@ -8,7 +8,7 @@ import ChartComponent from '../atomic/Chart';
 
 export default function Reports() {
   const dispatch = useDispatch();
-  const { users, total_import_sell, total_import_buy, total_profit, percentage } = useSelector((state) => state.adminReducer);
+  const { users, total_import_sell, total_import_buy, total_profit, percentage, total_import_expense } = useSelector((state) => state.adminReducer);
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -28,6 +28,11 @@ export default function Reports() {
     dispatch(GET_SELLS_REPORT(selectedDate));
   }, [dispatch, selectedMonth, selectedYear]);
 
+  const getExpensesReport = useCallback(() => {
+    const selectedDate = selectedMonth < 12 ? new Date(selectedYear, selectedMonth, 15).toISOString() : '';
+    dispatch(GET_EXPENSES_REPORT(selectedDate));
+  }, [dispatch, selectedMonth, selectedYear]);
+
   const getUsersReport = useCallback(() => {
     dispatch(GET_USERS_REPORT());
   }, [dispatch]);
@@ -36,8 +41,9 @@ export default function Reports() {
     const today = new Date().toISOString();
     getBuysReport(today);
     getSellsReport(today);
+    getExpensesReport(today);
     getUsersReport();
-  }, [getBuysReport, getSellsReport, getUsersReport]);
+  }, [getBuysReport, getSellsReport, getUsersReport, getExpensesReport]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -71,7 +77,7 @@ export default function Reports() {
                 totalImportBuy={total_import_buy}
                 totalImportSell={total_import_sell}
                 totalProfit={total_profit}
-                totalExpenses={total_import_sell - total_import_buy - total_profit}
+                totalExpenses={total_import_expense}
                 percentage={percentage}
               />
             </Row>
