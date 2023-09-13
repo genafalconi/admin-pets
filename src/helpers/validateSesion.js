@@ -1,43 +1,41 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { LOGOUT, VERIFY_ADMIN_TOKEN } from '../redux/actions';
+import { VERIFY_ADMIN_TOKEN } from '../redux/actions';
 import Spinner from 'react-bootstrap/Spinner';
 import { decrypt } from './encryptToken';
 
-export default function ValidateSesion() {
-
+export default function ValidateSesion({ setValidUser }) {
+  const dispatch = useDispatch();
   const [validToken, setValidToken] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  let userAuth = localStorage.getItem('user') && JSON.stringify(localStorage.getItem('user'))
-  let token = localStorage.getItem('token') && JSON.stringify(localStorage.getItem('token'))
-
+  let userAuth = localStorage.getItem('user') && localStorage.getItem('user')
+  let token = localStorage.getItem('token') && localStorage.getItem('token')
+console.log(userAuth, token)
   if (!userAuth && !token) {
     const query = new URLSearchParams(window.location.search);
     token = decrypt(query.get("token"));
     userAuth = decrypt(query.get("user"));
   }
 
-  const dispatch = useDispatch();
-
-  const verifyTokenValidity = useCallback(async () => {
+  const verifyTokenValidity = useCallback((user_auth, finish_token) => {
     try {
-      dispatch(VERIFY_ADMIN_TOKEN({ user: userAuth, idtoken: token }))
+      dispatch(VERIFY_ADMIN_TOKEN({ user: user_auth, idtoken: finish_token }))
         .then((res) => {
           setValidToken(res.payload);
+          setValidUser(res.payload);
           setIsLoading(false);
-          if (validToken) {
-            localStorage.setItem('token', token)
-            localStorage.setItem('user', userAuth)
-          } else {
-            dispatch(LOGOUT())
+          if (res.payload) {
+            localStorage.setItem('token', finish_token);
+            localStorage.setItem('user', user_auth);
+            localStorage.setItem('user_auth', res.payload);
           }
         });
     } catch (error) {
       console.log(error);
     }
     // eslint-disable-next-line
-  }, [dispatch, token, userAuth]);
+  }, [dispatch]);
 
   const unauthorized = () => {
     return (
@@ -50,14 +48,14 @@ export default function ValidateSesion() {
   useEffect(() => {
     const verifyToken = () => {
       if (token && userAuth) {
-        verifyTokenValidity();
+        verifyTokenValidity(userAuth, token);
       } else {
         setIsLoading(false);
       }
     };
     verifyToken();
-
-  }, [verifyTokenValidity, token, userAuth]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>

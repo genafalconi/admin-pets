@@ -127,6 +127,7 @@ export default function Products() {
   const searchProducts = useCallback(() => {
     setIsLoading(true);
     setIsSearched(true);
+    setCurrentPage(1);
     dispatch(GET_PRODUCTS_SEARCH({ page: currentPage, text: inputValue.current.value })).then((res) => {
       if (res.payload) {
         setIsLoading(false);
