@@ -97,19 +97,22 @@ export default function Products() {
               const buyPriceInput = parseFloat(document.getElementById(`buy-price-input-${subproduct._id}`).value);
               const sellPriceInput = parseFloat(document.getElementById(`sell-price-input-${subproduct._id}`).value);
               const stockInput = parseInt(document.getElementById(`stock-input-${subproduct._id}`).value);
+              const salePriceInput = parseInt(document.getElementById(`sale-price-input-${subproduct._id}`).value);
 
               if (
                 nameInput !== product.name ||
                 sizeInput !== subproduct.size ||
                 buyPriceInput !== subproduct.buy_price ||
                 sellPriceInput !== subproduct.sell_price ||
-                stockInput !== subproduct.stock
+                stockInput !== subproduct.stock ||
+                salePriceInput !== subproduct.sale_price
               ) {
                 product.name = nameInput;
                 subproduct.size = sizeInput;
                 subproduct.buy_price = buyPriceInput;
                 subproduct.sell_price = sellPriceInput;
                 subproduct.stock = stockInput;
+                subproduct.sale_price = salePriceInput;
               }
             }
             return { ...subproduct, editable: false };
@@ -223,6 +226,7 @@ export default function Products() {
                             <th>Tamaño</th>
                             <th>Compra</th>
                             <th>Venta</th>
+                            <th>Oferta</th>
                             <th>Stock</th>
                             <th>Activo</th>
                             <th>Highlight</th>
@@ -264,6 +268,13 @@ export default function Products() {
                                       subproduct.editable ?
                                         <input type="number" defaultValue={subproduct.sell_price} id={`sell-price-input-${subproduct._id}`} />
                                         : subproduct.sell_price
+                                    }
+                                  </td>
+                                  <td>
+                                    {
+                                      subproduct.editable ?
+                                        <input type="number" defaultValue={subproduct.sale_price} id={`sale-price-input-${subproduct._id}`} />
+                                        : subproduct.sale_price
                                     }
                                   </td>
                                   <td>
