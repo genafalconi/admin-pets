@@ -14,6 +14,7 @@ import { cloudinaryImg } from "../../helpers/cloudinary";
 // import { useNavigate } from "react-router-dom";
 import ProductCreation from "./ProductCreation";
 import LazyComponent from "../../helpers/lazyComponents";
+import SubprodOnlyCreation from "./SubprodOnlyCreation";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function Products() {
   const inputValue = useRef('');
   const [isSearched, setIsSearched] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [showOnlySubproduct, setShowOnlySubproduct] = useState(false);
 
   const getProducts = useCallback(() => {
     setIsLoading(true);
@@ -203,6 +205,9 @@ export default function Products() {
         <div className="create-product">
           <button onClick={() => setShowCreate(true)}>Crear</button>
         </div>
+        <div className="search-create-product">
+          <button onClick={() => setShowOnlySubproduct(true)}>Buscar y Crear</button>
+        </div>
         <div className="reload-product">
           <RxReload onClick={reloadProducts} size={25} className="RxReload" />
         </div>
@@ -328,6 +333,14 @@ export default function Products() {
           <ProductCreation
             showCreate={showCreate}
             setShowCreate={setShowCreate}
+          />
+        </LazyComponent>
+      )}
+      {showOnlySubproduct && (
+        <LazyComponent>
+          <SubprodOnlyCreation
+            showOnlySubproduct={showOnlySubproduct}
+            setShowOnlySubproduct={setShowOnlySubproduct}
           />
         </LazyComponent>
       )}

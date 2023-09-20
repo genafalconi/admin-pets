@@ -23,12 +23,12 @@ function App() {
 
   useEffect(() => {
   }, [validUser]);
-console.log(validUser)
+  
   return (
     <div className="App">
-      <ValidateSesion setValidUser={setValidUser} />
+      {/* <ValidateSesion setValidUser={setValidUser} />
       {
-        validUser && (
+        validUser && ( */}
           <>
             <AutoLogout inactivityTime={process.env.REACT_APP_INACTIVITY} />
             <Nav />
@@ -47,8 +47,8 @@ console.log(validUser)
               </Routes>
             </div>
           </>
-        )
-      }
+        {/* )
+      } */}
     </div >
   );
 }
