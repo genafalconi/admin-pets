@@ -11,7 +11,7 @@ export default function ValidateSesion({ setValidUser }) {
 
   let userAuth = localStorage.getItem('user') && localStorage.getItem('user')
   let token = localStorage.getItem('token') && localStorage.getItem('token')
-console.log(userAuth, token)
+
   if (!userAuth && !token) {
     const query = new URLSearchParams(window.location.search);
     token = decrypt(query.get("token"));

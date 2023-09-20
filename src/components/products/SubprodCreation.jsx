@@ -20,6 +20,7 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
     product: product._id,
     buy_price: 0,
     sell_price: 0,
+    sale_price: 0,
     size: 0,
     stock: 0,
     animal: productData.animal,
@@ -33,13 +34,13 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
     animal_size: yup.string().required('Ingrese el tamaño del animal'),
     buy_price: yup.number().min(100, 'Ingrese un numero mayor').required('Ingrese el precio de compra'),
     sell_price: yup.number().min(100, 'Ingrese un numero mayor').required('Ingrese el precio de venta'),
+    sale_price: yup.number().min(100, 'Ingrese un numero mayor').required('Ingrese el precio de oferta'),
     stock: yup.number().min(1, 'Ingrese un numero mayor').max(1000, 'Ingrese un numero menor').required('Ingrese el stock'),
     size: yup.number().min(0.5, 'Ingrese un numero mayor').required('Ingrese el tamaño')
   });
 
   const handleCreate = useCallback(() => {
     setIsLoadingButton(true);
-    console.log(subproductData)
     dispatch(CREATE_SUBPRODUCT(subproductData)).then((res) => {
       if (res.payload) {
         setIsLoadingButton(false);
@@ -71,6 +72,7 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
                     initialValues={{
                       buy_price: 0,
                       sell_price: 0,
+                      sale_price: 0,
                       size: 0,
                       stock: 0,
                       animal_size: ''
@@ -145,6 +147,28 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
                               </Form.Control.Feedback>
                             </Form.Group>
                           </Form.Group>
+                          <Form.Group as={Col}>
+                            <Form.Label>Bolsa(kg)</Form.Label>
+                            <Form.Group>
+                              <Form.Control
+                                className="input-form  input-small"
+                                type="number"
+                                placeholder="Bolsa"
+                                name="size"
+                                value={values.size}
+                                onChange={(e) => {
+                                  setSubproductData((prevData) => ({ ...prevData, size: e.target.value }));
+                                  setFieldValue('size', e.target.value);
+                                  handleChange(e);
+                                }}
+                                onBlur={handleBlur}
+                                isInvalid={touched.size && !!errors.size}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors.size}
+                              </Form.Control.Feedback>
+                            </Form.Group>
+                          </Form.Group>
                         </Form.Group>
                         <Form.Group as={Row}>
                           <Form.Group as={Col}>
@@ -192,24 +216,24 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
                             </Form.Group>
                           </Form.Group>
                           <Form.Group as={Col}>
-                            <Form.Label>Bolsa(kg)</Form.Label>
+                            <Form.Label>Oferta($)</Form.Label>
                             <Form.Group>
                               <Form.Control
-                                className="input-form  input-small"
+                                className="input-form input-small"
                                 type="number"
                                 placeholder="Bolsa"
-                                name="size"
-                                value={values.size}
+                                name="sale_price"
+                                value={values.sale_price}
                                 onChange={(e) => {
-                                  setSubproductData((prevData) => ({ ...prevData, size: e.target.value }));
-                                  setFieldValue('size', e.target.value);
+                                  setSubproductData((prevData) => ({ ...prevData, sale_price: parseFloat(e.target.value) }));
+                                  setFieldValue('sale_price', e.target.value);
                                   handleChange(e);
                                 }}
                                 onBlur={handleBlur}
-                                isInvalid={touched.size && !!errors.size}
+                                isInvalid={touched.sale_price && !!errors.sale_price}
                               />
                               <Form.Control.Feedback type="invalid">
-                                {errors.size}
+                                {errors.sale_price}
                               </Form.Control.Feedback>
                             </Form.Group>
                           </Form.Group>

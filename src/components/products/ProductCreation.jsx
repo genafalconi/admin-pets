@@ -300,14 +300,22 @@ export default function ProductCreation({ showCreate, setShowCreate }) {
                       </Form.Group>
                     </Form.Group>
                     <div className="button-charge">
-                      <Button
-                        className='submit-button'
-                        onClick={handleCreate}
-                        disabled={!isValid || !dirty || isLoadingButton}
-                        variant='success'
-                      >
-                        {isLoadingButton ? <Spinner animation="border" size="sm" /> : 'Cargar'}
-                      </Button>
+                      {
+                        isLoadingButton ? (
+                          <Button className='submit-button' disabled variant='success'>
+                            <Spinner animation="border" size="sm" />
+                          </Button>
+                        ) : (
+                          <Button
+                            className='submit-button'
+                            onClick={handleCreate}
+                            disabled={!isValid || !dirty || isLoadingButton}
+                            variant='success'
+                          >
+                            Cargar
+                          </Button>
+                        )
+                      }
                     </div>
                   </Form>
                 )

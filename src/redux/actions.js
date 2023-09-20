@@ -375,3 +375,14 @@ export const UPDATE_USER_NEXT_BUY = createAsyncThunk(
     }
   }
 )
+
+export const GET_PRODUCTS_TO_ADD = createAsyncThunk(
+  'GET_PRODUCTS_TO_ADD', async (input) => {
+    try {
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin-atomic/product?input=${input}`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)
