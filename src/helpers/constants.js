@@ -18,10 +18,15 @@ export const navItems = [
     Icon: null,
     img: 'Admin/delivery-truck_2769339_vtbacu'
   },
+  // {
+  //   name: 'Semana',
+  //   Icon: null,
+  //   img: 'Admin/calendar_2693507-removebg-preview_yffdh8'
+  // },
   {
     name: 'Ventas',
     Icon: null,
-    img: 'Admin/exchange_2990154_osnjmc'
+    img: 'Admin/repeat_444574-removebg-preview_jfrmlk'
   },
   {
     name: 'Compras',

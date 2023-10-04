@@ -21,11 +21,17 @@ export default class ErrorHandler extends Component {
       title: 'Error!',
       text: 'Ha ocurrido un error, se recargara la página!',
       icon: 'error',
-      // timer: 2500,
-      // timerProgressBar: true,
-      // showConfirmButton: false
+      timer: 2500,
+      timerProgressBar: true,
+      showConfirmButton: false
     }).then(() => {
-      window.location.href = '/';
+      if (process.env.REACT_APP_ERROR_HANDLERS === 'true') {
+        window.location.href = '/';
+        window.location.href = '/'
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('user_auth')
+      }
     });
   };
 

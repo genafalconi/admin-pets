@@ -386,3 +386,14 @@ export const GET_PRODUCTS_TO_ADD = createAsyncThunk(
     }
   }
 )
+
+export const GET_USERS_REBUY_WEEK = createAsyncThunk(
+  'GET_USERS_REBUY_WEEK', async () => {
+    try {
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/users-week`, null, null)
+      return res?.data
+    } catch (error) {
+      return errorHandler(error)
+    }
+  }
+)

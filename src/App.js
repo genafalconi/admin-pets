@@ -17,6 +17,7 @@ import ExpenseForm from './components/expense/ExpenseForm';
 import ProductDetail from './components/products/ProductDetail';
 import LandingManager from './components/landing/LandingManager';
 import { useEffect, useState } from 'react';
+import Week from './components/week/Week';
 
 function App() {
   const [validUser, setValidUser] = useState(false);
@@ -36,6 +37,7 @@ function App() {
               <Routes>
                 <Route exact path="/" element={<LazyComponent><Landing /></LazyComponent>} />
                 <Route exact path="/entregas" element={<LazyComponent><Delivery /></LazyComponent>} />
+                <Route exact path="/semana" element={<LazyComponent><Week /></LazyComponent>} />
                 <Route exact path="/ventas" element={<LazyComponent><FullForm /></LazyComponent>} />
                 <Route exact path="/compras" element={<LazyComponent><BuyForm /></LazyComponent>} />
                 <Route exact path="/clientes" element={<LazyComponent><UserForm /></LazyComponent>} />

@@ -3,7 +3,7 @@ import '../../styles/components/landing.scss';
 import { cloudinaryImg } from '../../helpers/cloudinary';
 import { AdvancedImage } from '@cloudinary/react';
 
-const LOGO_PUBLIC_ID = 'Ppales/Logo'
+const LOGO_PUBLIC_ID = 'Ppales/croplogo_ikxgit'
 
 export default function Landing() {
 

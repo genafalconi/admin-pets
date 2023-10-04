@@ -5,7 +5,7 @@ import '../../styles/components/nav.scss'
 import NavItem from "../atomic/NavItem";
 import { navItems } from "../../helpers/constants";
 
-const LOGO_PUBLIC_ID = 'Ppales/Logo'
+const LOGO_PUBLIC_ID = 'Ppales/croplogo_ikxgit'
 
 export default function Nav() {
 
