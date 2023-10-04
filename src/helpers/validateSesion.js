@@ -9,13 +9,18 @@ export default function ValidateSesion({ setValidUser }) {
   const [validToken, setValidToken] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  let userAuth = localStorage.getItem('user') && localStorage.getItem('user')
-  let token = localStorage.getItem('token') && localStorage.getItem('token')
+  let userAuth = localStorage.getItem('user')
+  let token = localStorage.getItem('token')
+  const query = new URLSearchParams(window.location.search);
+  const ext_token = decrypt(query?.get("token"));
+  const ext_userAuth = decrypt(query?.get("user"));
 
-  if (!userAuth && !token) {
-    const query = new URLSearchParams(window.location.search);
-    token = decrypt(query.get("token"));
-    userAuth = decrypt(query.get("user"));
+  if (userAuth !== ext_userAuth && token !== ext_token) {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    localStorage.removeItem('user_auth')
+    userAuth = ext_userAuth
+    token = ext_token
   }
 
   const verifyTokenValidity = useCallback((user_auth, finish_token) => {

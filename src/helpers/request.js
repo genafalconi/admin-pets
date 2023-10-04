@@ -43,7 +43,12 @@ export const request = async (method, url, params, data, idtoken) => {
         showConfirmButton: false
       })
         .then(() => {
-          window.location.href = '/'
+          if (process.env.REACT_APP_ERROR_HANDLERS === 'true') {
+            window.location.href = '/'
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            localStorage.removeItem('user_auth')
+          }
         })
       throw new Error(error);
     }
