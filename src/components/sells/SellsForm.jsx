@@ -123,7 +123,11 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
                     placeholder="Date"
                     name="date"
                     value={values.date}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      setSellData((prevData) => ({ ...prevData, date: getCurrentDate(e.target.value) }))
+                      setFieldValue('date', getCurrentDate(e.target.value))
+                      handleChange(e)
+                    }}
                     onBlur={handleBlur}
                     isInvalid={touched.date && !!errors.date}
                   />

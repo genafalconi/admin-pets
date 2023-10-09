@@ -12,6 +12,8 @@ export const ord_constants = {
   CANCELLED: 'CANCELLED'
 }
 
+export const defaultPassword = '123456'
+
 export const navItems = [
   {
     name: 'Entregas',

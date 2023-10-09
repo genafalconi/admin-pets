@@ -63,7 +63,6 @@ export default function ExpenseForm() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          console.log(values)
           handleCreateExpense(values)
           resetForm();
         }}

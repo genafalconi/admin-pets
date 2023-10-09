@@ -2,8 +2,9 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import Swal from 'sweetalert2';
 import { firebaseAuth } from '../helpers/firebase';
 import { request } from '../helpers/request'
-import { req_constants } from '../helpers/constants'
+import { defaultPassword, req_constants } from '../helpers/constants'
 import errorHandler from '../helpers/errorHandler';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 // REACT_APP_CART, REACT_APP_PROD, REACT_APP_ORDER, REACT_APP_OFFER
 const { REACT_APP_AUTH, REACT_APP_ADMIN } = process.env;
 
@@ -125,10 +126,27 @@ export const GET_PAGINATED_BUYS = createAsyncThunk(
 export const CREATE_MANUALLY_CLIENT = createAsyncThunk(
   'CREATE_MANUALLY_CLIENT', async (clientdata) => {
     try {
-      const res = await request(req_constants.POST, `${REACT_APP_ADMIN}/admin/manual-client`, null, clientdata)
-      return res?.data
+      const { user } = await createUserWithEmailAndPassword(firebaseAuth, clientdata.email, defaultPassword)
+      if (user) {
+        const registerData = {
+          ...clientdata,
+          firebase_id: user.uid
+        }
+        const res = await request(req_constants.POST, `${REACT_APP_ADMIN}/admin/manual-client`, null, registerData)
+        return res?.data
+      }
     } catch (error) {
-      return errorHandler(error)
+      const firebaseError = error.message.replace('Firebase: Error', '').match(/\((.*)\)/).pop();
+      if (firebaseError === 'auth/email-already-in-use') {
+        Swal.fire({
+          title: 'Error!',
+          text: `Ya existe un usuario con el mail ${clientdata.email}`,
+          icon: 'error'
+        })
+        return null
+      } else {
+        return errorHandler(error)
+      }
     }
   }
 )

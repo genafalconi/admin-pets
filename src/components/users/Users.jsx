@@ -93,14 +93,14 @@ export default function Users() {
                             return (
                               <tr key={elem._id}>
                                 <td>{index}</td>
-                                <td>{elem.full_name}</td>
-                                <td>{elem.phone ? elem.phone : '-'}</td>
+                                <td>{elem?.full_name}</td>
+                                <td>{elem?.phone ? elem.phone : '-'}</td>
                                 {
-                                  elem.last_address?.street ? (
-                                    <td>{elem.last_address?.street} {elem.last_address?.number} {elem.last_address?.extra}</td>
+                                  elem?.last_address?.street ? (
+                                    <td>{elem.last_address?.street} {elem?.last_address?.number} {elem?.last_address?.extra}</td>
                                   ) : <td>-</td>
                                 }
-                                <td>{elem.last_order?.createdAt ? formatDate(elem.last_order?.createdAt) : '-'}</td>
+                                <td>{elem?.last_order?.createdAt ? formatDate(elem?.last_order?.createdAt) : '-'}</td>
                                 {
                                   isEditing ? (
                                     <td className={notValidInput ? 'invalid-td' : ''}>
@@ -109,7 +109,7 @@ export default function Users() {
                                       {notValidInput && <span className="invalid-text">Invalido</span>}
                                     </td>
                                   ) : (
-                                    <td>{elem.next_buy ? formatDate(elem.next_buy) : '-'}</td>
+                                    <td>{elem?.next_buy ? formatDate(elem?.next_buy) : '-'}</td>
                                   )
                                 }
                                 <td>

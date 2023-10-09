@@ -149,9 +149,11 @@ export default function Products() {
     const actualProd = products.find((elem) => elem.subproducts.find((sub) => sub._id === subprod_id));
     delete modifiedProd.subproducts[0].editable;
     delete actualProd.subproducts[0].editable;
-
+    
     if (JSON.stringify(modifiedProd) !== JSON.stringify(actualProd)) {
-      updateSubproduct(subprod_id, modifiedProd);
+      const modifiedSubprod = modifiedProd.subproducts.filter((elem) => elem._id === subprod_id)
+      const finalProduct = {...modifiedProd, subproducts: modifiedSubprod}
+      updateSubproduct(subprod_id, finalProduct);
     }
   };
 

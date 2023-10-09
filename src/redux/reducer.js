@@ -62,13 +62,14 @@ export const adminReducer = createReducer(initialState, (builder) => {
         state.buys.push(action.payload.data)
     })
     builder.addCase(GET_PAGINATED_BUYS.fulfilled, (state, action) => {
-        console.log(action.payload)
         state.buys = action.payload.movements
         state.total_movements = action.payload.total_movements
         state.total_pages = action.payload.total_pages
     })
     builder.addCase(CREATE_MANUALLY_CLIENT.fulfilled, (state, action) => {
-        state.users.push(action.payload.data)
+        if (action.payload) {
+            state.users.push(action.payload.data)
+        }
     })
     builder.addCase(GET_PAGINATED_USERS.fulfilled, (state, action) => {
         state.users = action.payload.movements
