@@ -13,8 +13,8 @@ export default function BuyForm() {
 
   const dispatch = useDispatch()
 
-  const getCurrentDate = () => {
-    const now = new Date();
+  const getCurrentDate = (date) => {
+    const now = date ? new Date(date) : new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
@@ -118,7 +118,11 @@ export default function BuyForm() {
                         placeholder="Date"
                         name="date"
                         value={values.date}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          setBuyFullData((prevData) => ({ ...prevData, date: getCurrentDate(e.target.value) }))
+                          setFieldValue('date', getCurrentDate(e.target.value))
+                          handleChange(e)
+                        }}
                         onBlur={handleBlur}
                         isInvalid={touched.date && !!errors.date}
                       />

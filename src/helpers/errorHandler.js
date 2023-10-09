@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 
 export default function errorHandler(error) {
   console.log(error)
-  return Swal.fire({
+  Swal.fire({
     title: 'Ha ocurrido un error',
     text: 'Sera dirigido al inicio',
     icon: 'error',
@@ -16,5 +16,6 @@ export default function errorHandler(error) {
         localStorage.removeItem('user')
         localStorage.removeItem('user_auth')
       }
+      return null;
     })
 }

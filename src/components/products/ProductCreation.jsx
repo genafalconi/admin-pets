@@ -12,7 +12,7 @@ import { useCallback } from "react";
 export default function ProductCreation({ showCreate, setShowCreate }) {
 
   const dispatch = useDispatch();
-  const { animals, animal_age, brands, categories } = useSelector((state) => state.adminReducer);
+  const { animals, animal_age, brands, categories, animal_size } = useSelector((state) => state.adminReducer);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
@@ -24,7 +24,8 @@ export default function ProductCreation({ showCreate, setShowCreate }) {
     animal: '',
     animal_age: '',
     brand: '',
-    category: ''
+    category: '',
+    animal_size: ''
   })
 
   const validationSchema = yup.object().shape({
@@ -33,6 +34,7 @@ export default function ProductCreation({ showCreate, setShowCreate }) {
     animal: yup.string().required('Ingrese el animal'),
     brand: yup.string().required('Ingrese la marca'),
     animal_age: yup.string().required('Ingrese la edad'),
+    animal_size: yup.string().required('Ingrese el tamaño del animal'),
     // description: yup.string().min(5, 'Debe ser mas largo').max(400, 'Muy largo'),
     // image: yup.string().min(5, 'Debe ser mas largo').max(200, 'Muy largo').required('Ingrese la imagen')
   });
@@ -94,6 +96,7 @@ export default function ProductCreation({ showCreate, setShowCreate }) {
                 animal: '',
                 brand: '',
                 animal_age: '',
+                animal_size: '',
                 description: '',
                 image: ''
               }}
@@ -229,6 +232,35 @@ export default function ProductCreation({ showCreate, setShowCreate }) {
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
                             {errors.brand}
+                          </Form.Control.Feedback>
+                        </Form.Group>
+                      </Form.Group>
+                      <Form.Group as={Col} controlId="validationFormikPayment">
+                        <Form.Label className="full-label">Tamaño animal: </Form.Label>
+                        <Form.Group>
+                          <Form.Select
+                            className='select-form'
+                            value={values.animal_size}
+                            name="animal_size"
+                            onChange={(e) => {
+                              setProductData((prevData) => ({ ...prevData, animal_size: e.target.value }));
+                              setFieldValue('animal_size', e.target.value);
+                              handleChange(e);
+                            }}
+                            onBlur={handleBlur}
+                            isInvalid={touched.animal_size && !!errors.animal_size}
+                          >
+                            <option key={'default'} value='' disabled>Tamaño</option>
+                            {
+                              animal_size.map((elem) => {
+                                return (
+                                  <option key={elem} value={elem}>{elem}</option>
+                                )
+                              })
+                            }
+                          </Form.Select>
+                          <Form.Control.Feedback type="invalid">
+                            {errors.animal_size}
                           </Form.Control.Feedback>
                         </Form.Group>
                       </Form.Group>

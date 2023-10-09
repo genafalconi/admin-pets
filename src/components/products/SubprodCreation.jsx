@@ -9,10 +9,10 @@ import '../../styles/components/product-form.scss';
 import SubproductsTable from "./SubproductsTable";
 import { useCallback } from "react";
 
-export default function SubproductCreation({ showCreateSubproduct, setShowCreateSubproduct, productData }) {
+export default function SubproductCreation({ showCreateSubproduct, productData }) {
 
   const dispatch = useDispatch();
-  const { animal_size, product } = useSelector((state) => state.adminReducer);
+  const { product } = useSelector((state) => state.adminReducer);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingButton, setIsLoadingButton] = useState(false);
@@ -27,11 +27,10 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
     animal_age: productData.animal_age,
     brand: productData.brand,
     category: productData.category,
-    animal_size: animal_size[0]
+    animal_size: productData.animal_size
   })
 
   const validationSchema = yup.object().shape({
-    animal_size: yup.string().required('Ingrese el tamaño del animal'),
     buy_price: yup.number().min(100, 'Ingrese un numero mayor').required('Ingrese el precio de compra'),
     sell_price: yup.number().min(100, 'Ingrese un numero mayor').required('Ingrese el precio de venta'),
     sale_price: yup.number().min(100, 'Ingrese un numero mayor').required('Ingrese el precio de oferta'),
@@ -74,8 +73,7 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
                       sell_price: 0,
                       sale_price: 0,
                       size: 0,
-                      stock: 0,
-                      animal_size: ''
+                      stock: 0
                     }}
                     onSubmit={(values, { resetForm }) => {
                       resetForm();
@@ -96,35 +94,6 @@ export default function SubproductCreation({ showCreateSubproduct, setShowCreate
                           <Form.Label className="product-label">Producto: {product.name}</Form.Label>
                         </Form.Group>
                         <Form.Group as={Row}>
-                          <Form.Group as={Col} controlId="validationFormikPayment">
-                            <Form.Label className="full-label">Tamaño animal: </Form.Label>
-                            <Form.Group>
-                              <Form.Select
-                                className='select-form'
-                                value={values.animal_size}
-                                name="animal_size"
-                                onChange={(e) => {
-                                  setSubproductData((prevData) => ({ ...prevData, animal_size: e.target.value }));
-                                  setFieldValue('animal_size', e.target.value);
-                                  handleChange(e);
-                                }}
-                                onBlur={handleBlur}
-                                isInvalid={touched.animal_size && !!errors.animal_size}
-                              >
-                                <option key={'default'} value='' disabled>Tamaño</option>
-                                {
-                                  animal_size.map((elem) => {
-                                    return (
-                                      <option key={elem} value={elem}>{elem}</option>
-                                    )
-                                  })
-                                }
-                              </Form.Select>
-                              <Form.Control.Feedback type="invalid">
-                                {errors.animal_size}
-                              </Form.Control.Feedback>
-                            </Form.Group>
-                          </Form.Group>
                           <Form.Group as={Col}>
                             <Form.Label>Stock</Form.Label>
                             <Form.Group>

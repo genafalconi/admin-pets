@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import { Form, Button, Row, Col, Modal } from 'react-bootstrap';
+import { Form, Button, Row, Col, Modal, Spinner } from 'react-bootstrap';
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import '../../styles/components/user-form.scss'
@@ -13,6 +13,7 @@ export default function UserForm() {
 
   const dispatch = useDispatch();
   const [showCreate, setShowCreate] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validationSchema = yup.object().shape({
     email: yup.string().email().required(),
@@ -27,7 +28,8 @@ export default function UserForm() {
     extra: yup.string()
   });
 
-  const handleSubmitClient = useCallback((values) => {
+    const handleSubmitClient = useCallback((values) => {
+    setIsLoading(true)
     const dataToSend = {
       email: values.email,
       name: values.name,
@@ -50,6 +52,10 @@ export default function UserForm() {
             icon: 'success'
           })
         }
+      })
+      .finally(() => {
+        setShowCreate(false)
+        setIsLoading(false)
       })
   }, [dispatch])
 
@@ -282,12 +288,14 @@ export default function UserForm() {
                   </Form.Group>
                 </Form.Group>
                 <Form.Group as={Row} className='btn-create-user'>
+                  <Button variant='success' type='submit' disabled={!isValid}>
+                    {
+                      isLoading ? <Spinner animation="border" size="sm" /> : 'Finalizar'
+                    }
+                  </Button>
                 </Form.Group>
               </Form>
             </Modal.Body>
-            <Modal.Footer className='modal-user-footer'>
-              <Button variant='success' type='submit' disabled={!isValid}>Finalizar</Button>
-            </Modal.Footer>
           </Modal>
         )}
       </Formik>
