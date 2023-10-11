@@ -1,6 +1,5 @@
 import axios from "axios";
 import Swal from 'sweetalert2';
-import eventBus from "./event-bus";
 
 export const request = async (method, url, params, data, idtoken) => {
 
@@ -32,7 +31,14 @@ export const request = async (method, url, params, data, idtoken) => {
         timerProgressBar: true,
         showConfirmButton: false
       })
-      eventBus.emit('expired-sesion', true)
+        .then(() => {
+          if (process.env.REACT_APP_ERROR_HANDLERS === 'true') {
+            window.location.href = '/'
+            localStorage.removeItem('token')
+            localStorage.removeItem('user')
+            localStorage.removeItem('user_auth')
+          }
+        })
     } else {
       Swal.fire({
         title: 'Error!',

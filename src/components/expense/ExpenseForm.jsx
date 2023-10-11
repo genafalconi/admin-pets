@@ -11,8 +11,9 @@ import Swal from 'sweetalert2';
 
 export default function ExpenseForm() {
 
-  const getCurrentDate = () => {
-    const now = new Date();
+  const getCurrentDate = (date) => {
+    const now = date ? new Date(date) : new Date();
+    date && now.setDate(now.getDate() + 1)
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
@@ -100,7 +101,10 @@ export default function ExpenseForm() {
                         placeholder="Date"
                         name="date"
                         value={values.date}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          setFieldValue('date', getCurrentDate(e.target.value))
+                          handleChange(e)
+                        }}
                         onBlur={handleBlur}
                         isInvalid={touched.date && !!errors.date}
                       />
