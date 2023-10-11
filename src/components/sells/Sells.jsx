@@ -54,7 +54,7 @@ export default function Sells() {
             {sells?.length !== 0 ? (
               <>
                 <Accordion key="accordion-sells" className="accordion-sells">
-                  {sells.map((elem) => {
+                  {sells.map((elem, index) => {
                     const updatedProducts = elem.cart?.subproducts?.map((subproduct) => ({
                       ...subproduct.subproduct,
                       sell_price: subproduct.subproduct?.sell_price,
@@ -63,7 +63,7 @@ export default function Sells() {
                     }));
 
                     return (
-                      <Accordion.Item key={elem._id} eventKey={elem._id}>
+                      <Accordion.Item key={`${elem._id}-${index}`} eventKey={elem._id}>
                         <Accordion.Header>
                           <div className="col sell-header-col">
                             <h5>{formatDate(elem.offer?.date)}</h5>
@@ -84,7 +84,7 @@ export default function Sells() {
                     );
                   })}
                 </Accordion>
-                <CustomPagination currentPage={currentPage} totalPages={total_pages} handlePageClick={handlePageClick}/>
+                <CustomPagination currentPage={currentPage} totalPages={total_pages} handlePageClick={handlePageClick} />
               </>
             ) : (
               <h2 className="fs-4 mt-2">No hay ventas</h2>
