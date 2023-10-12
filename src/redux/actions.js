@@ -274,9 +274,13 @@ export const GET_SELLS_REPORT = createAsyncThunk(
 )
 
 export const GET_USERS_REPORT = createAsyncThunk(
-  'GET_USERS_REPORT', async () => {
+  'GET_USERS_REPORT', async (date) => {
     try {
-      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/report-users`, null, null)
+      let query = ''
+      if (date) {
+        query = `?date=${date}`
+      }
+      const res = await request(req_constants.GET, `${REACT_APP_ADMIN}/admin/report-users${query}`, null, null)
       return res?.data
     } catch (error) {
       return errorHandler(error)

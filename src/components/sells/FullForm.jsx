@@ -20,7 +20,6 @@ export default function FullForm() {
   const [showCreate, setShowCreate] = useState(false);
 
   const handleSubmitSell = useCallback(() => {
-    console.log(sellFullData)
     setIsLoadingButton(true)
     dispatch(CREATE_MANUALLY_SELL(sellFullData))
       .then((res) => {

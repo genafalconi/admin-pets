@@ -56,6 +56,7 @@ export default function BuyForm() {
           })
           setBuyFullData({})
           setFinalizeForm(false)
+          setShowCreate(false)
         }
         setIsLoadingButton(false);
       })

@@ -19,11 +19,14 @@ export default function ProductsTable({ products, totalProducts, isSell }) {
           products?.map((elem, index) => {
             return (
               <tr key={`${elem._id}-${index}`}>
-                <td>{`${elem.product?.name ? elem.product.name : elem.name} ${elem.size}kg`}</td>
+                <td>{
+                  `${elem.subproduct?.product?.name ? elem.subproduct?.product?.name : elem.name} 
+                ${elem.subproduct?.size ? elem.subproduct?.size : elem.size}kg`
+                }</td>
                 <td>{elem.quantity}</td>
                 <td>${elem.buy_price?.toFixed(2)}</td>
-                <td>${elem.sell_price?.toFixed(2)}</td>
-                <td>${((isSell ? elem.sell_price : elem.buy_price) * elem.quantity)?.toFixed(2)}</td>
+                <td>${elem.highlight ? elem.sale_price?.toFixed(2) : elem.sell_price?.toFixed(2)}</td>
+                <td>${((isSell ? (elem.highlight ? elem.sale_price : elem.sell_price) : elem.buy_price) * elem.quantity)?.toFixed(2)}</td>
               </tr>
             )
           })

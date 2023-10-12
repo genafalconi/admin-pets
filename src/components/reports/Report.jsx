@@ -34,8 +34,9 @@ export default function Reports() {
   }, [dispatch, selectedMonth, selectedYear]);
 
   const getUsersReport = useCallback(() => {
-    dispatch(GET_USERS_REPORT());
-  }, [dispatch]);
+    const selectedDate = selectedMonth < 12 ? new Date(selectedYear, selectedMonth, 15).toISOString() : '';
+    dispatch(GET_USERS_REPORT(selectedDate));
+  }, [dispatch, selectedMonth, selectedYear]);
 
   const getReports = useCallback(() => {
     const today = new Date().toISOString();
