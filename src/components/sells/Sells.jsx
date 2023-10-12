@@ -55,13 +55,6 @@ export default function Sells() {
               <>
                 <Accordion key="accordion-sells" className="accordion-sells">
                   {sells.map((elem, index) => {
-                    const updatedProducts = elem.cart?.subproducts?.map((subproduct) => ({
-                      ...subproduct.subproduct,
-                      sell_price: subproduct.subproduct?.sell_price,
-                      size: subproduct.subproduct?.size,
-                      quantity: subproduct.quantity
-                    }));
-
                     return (
                       <Accordion.Item key={`${elem._id}-${index}`} eventKey={elem._id}>
                         <Accordion.Header>
@@ -77,7 +70,7 @@ export default function Sells() {
                         </Accordion.Header>
                         <Accordion.Body>
                           <LazyComponent>
-                            <ProductsTable products={updatedProducts} totalProducts={elem.cart?.total_price} isSell={true} />
+                            <ProductsTable products={elem.products} totalProducts={elem.cart?.total_price} isSell={true} />
                           </LazyComponent>
                         </Accordion.Body>
                       </Accordion.Item>

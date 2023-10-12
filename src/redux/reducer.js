@@ -40,7 +40,7 @@ export const adminReducer = createReducer(initialState, (builder) => {
         state.user_auth = action.payload
     })
     builder.addCase(SEARCH_PRODUCTS.fulfilled, (state, action) => {
-        state.products_filtered = action.payload
+        state.product = action.payload
     })
     builder.addCase(SEARCH_USERS.fulfilled, (state, action) => {
         state.users = action.payload
@@ -51,35 +51,35 @@ export const adminReducer = createReducer(initialState, (builder) => {
         state.user_auth = false
     })
     builder.addCase(CREATE_MANUALLY_SELL.fulfilled, (state, action) => {
-        state.sells.push(action.payload.data)
+        state.sells.unshift(action.payload?.data)
     })
     builder.addCase(GET_PAGINATED_ORDERS.fulfilled, (state, action) => {
-        state.sells = action.payload.movements
-        state.total_movements = action.payload.total_movements
-        state.total_pages = action.payload.total_pages
+        state.sells = action.payload?.movements
+        state.total_movements = action.payload?.total_movements
+        state.total_pages = action.payload?.total_pages
     })
     builder.addCase(CREATE_MANUALLY_BUY.fulfilled, (state, action) => {
-        state.buys.push(action.payload.data)
+        state.buys.unshift(action.payload?.data)
     })
     builder.addCase(GET_PAGINATED_BUYS.fulfilled, (state, action) => {
-        state.buys = action.payload.movements
-        state.total_movements = action.payload.total_movements
-        state.total_pages = action.payload.total_pages
+        state.buys = action.payload?.movements
+        state.total_movements = action.payload?.total_movements
+        state.total_pages = action.payload?.total_pages
     })
     builder.addCase(CREATE_MANUALLY_CLIENT.fulfilled, (state, action) => {
         if (action.payload) {
-            state.users.push(action.payload.data)
+            state.users.push(action.payload?.data)
         }
     })
     builder.addCase(GET_PAGINATED_USERS.fulfilled, (state, action) => {
-        state.users = action.payload.movements
-        state.total_movements = action.payload.total_movements
-        state.total_pages = action.payload.total_pages
+        state.users = action.payload?.movements
+        state.total_movements = action.payload?.total_movements
+        state.total_pages = action.payload?.total_pages
     })
     builder.addCase(GET_PAGINATED_PRODUCTS.fulfilled, (state, action) => {
-        state.products = action.payload.movements
-        state.total_movements = action.payload.total_movements
-        state.total_pages = action.payload.total_pages
+        state.products = action.payload?.movements
+        state.total_movements = action.payload?.total_movements
+        state.total_pages = action.payload?.total_pages
     })
     builder.addCase(CHANGE_SUBPRODUCT_ACTIVE.fulfilled, (state, action) => {
         state.subproduct = action.payload
@@ -92,27 +92,27 @@ export const adminReducer = createReducer(initialState, (builder) => {
     })
     builder.addCase(GET_BUYS_REPORT.fulfilled, (state, action) => {
         state.buys = action.payload
-        state.total_import_buy = action.payload.total_import
-        state.month_buy = action.payload.month
+        state.total_import_buy = action.payload?.total_import
+        state.month_buy = action.payload?.month
     })
     builder.addCase(GET_EXPENSES_REPORT.fulfilled, (state, action) => {
         state.expenses = action.payload
-        state.total_import_expense = action.payload.total_import
-        state.month_buy = action.payload.month
+        state.total_import_expense = action.payload?.total_import
+        state.month_buy = action.payload?.month
     })
     builder.addCase(GET_SELLS_REPORT.fulfilled, (state, action) => {
-        state.sells = action.payload.movements
-        state.total_import_sell = action.payload.total_import
-        state.month_sell = action.payload.month
-        state.total_profit = action.payload.total_profit
-        state.percentage = action.payload.percentage
+        state.sells = action.payload?.movements
+        state.total_import_sell = action.payload?.total_import
+        state.month_sell = action.payload?.month
+        state.total_profit = action.payload?.total_profit
+        state.percentage = action.payload?.percentage
     })
     builder.addCase(GET_USERS_REPORT.fulfilled, (state, action) => {
         state.users = action.payload
     })
     builder.addCase(GET_DELIVERY_BY_WEEK.fulfilled, (state, action) => {
-        state.deliverys = action.payload.deliverys
-        state.week = action.payload.week
+        state.deliverys = action.payload?.deliverys
+        state.week = action.payload?.week
     })
     builder.addCase(GET_ORDER_DETAILS.fulfilled, (state, action) => {
         state.order = action.payload
@@ -121,17 +121,17 @@ export const adminReducer = createReducer(initialState, (builder) => {
         state.deliverys = action.payload
     })
     builder.addCase(CREATE_MANUALLY_EXPENSE.fulfilled, (state, action) => {
-        state.expenses.push(action.payload.data)
+        state.expenses.unshift(action.payload?.data)
     })
     builder.addCase(GET_PAGINATED_EXPENSES.fulfilled, (state, action) => {
-        state.expenses = action.payload.movements
-        state.total_movements = action.payload.total_movements
-        state.total_pages = action.payload.total_pages
+        state.expenses = action.payload?.movements
+        state.total_movements = action.payload?.total_movements
+        state.total_pages = action.payload?.total_pages
     })
     builder.addCase(GET_PRODUCTS_SEARCH.fulfilled, (state, action) => {
-        state.products = action.payload.movements
-        state.total_movements = action.payload.total_movements
-        state.total_pages = action.payload.total_pages
+        state.products = action.payload?.movements
+        state.total_movements = action.payload?.total_movements
+        state.total_pages = action.payload?.total_pages
     })
     builder.addCase(GET_SUBPRODUCT_DETAILS.fulfilled, (state, action) => {
         state.subproduct = action.payload
@@ -140,11 +140,11 @@ export const adminReducer = createReducer(initialState, (builder) => {
         state.carousel = action.payload
     })
     builder.addCase(GET_PRODUCTS_TYPES.fulfilled, (state, action) => {
-        state.categories = action.payload.categories
-        state.brands = action.payload.brands
-        state.animals = action.payload.animals
-        state.animal_age = action.payload.animal_age
-        state.animal_size = action.payload.animal_size
+        state.categories = action.payload?.categories
+        state.brands = action.payload?.brands
+        state.animals = action.payload?.animals
+        state.animal_age = action.payload?.animal_age
+        state.animal_size = action.payload?.animal_size
     })
     builder.addCase(CREATE_PRODUCT.fulfilled, (state, action) => {
         state.product = action.payload

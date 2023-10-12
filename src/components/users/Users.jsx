@@ -77,7 +77,6 @@ export default function Users() {
                     <Table striped size="sm" bordered hover variant="dark">
                       <thead>
                         <tr>
-                          <th>Nro</th>
                           <th>Nombre y Apellido</th>
                           <th>Contacto</th>
                           <th>Direccion</th>
@@ -92,7 +91,6 @@ export default function Users() {
                             const isEditing = editingUser === elem;
                             return (
                               <tr key={elem._id}>
-                                <td>{index}</td>
                                 <td>{elem?.full_name}</td>
                                 <td>{elem?.phone ? elem.phone : '-'}</td>
                                 {
