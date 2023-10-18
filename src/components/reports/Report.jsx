@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_BUYS_REPORT, GET_EXPENSES_REPORT, GET_SELLS_REPORT, GET_USERS_REPORT } from '../../redux/actions';
+import { GET_FULL_REPORTS } from '../../redux/actions';
 import { Card, Row, Table } from 'react-bootstrap';
 import MonthYearPicker from '../atomic/MonthYearPicker';
 import '../../styles/components/reports.scss'
@@ -8,7 +8,7 @@ import ChartComponent from '../atomic/Chart';
 
 export default function Reports() {
   const dispatch = useDispatch();
-  const { users, total_import_sell, total_import_buy, total_profit, percentage, total_import_expense } = useSelector((state) => state.adminReducer);
+  const { users, total_import_sell, total_import_buy, total_profit, total_import_expense } = useSelector((state) => state.adminReducer);
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -18,33 +18,21 @@ export default function Reports() {
     setSelectedYear(year);
   }, []);
 
-  const getBuysReport = useCallback(() => {
-    const selectedDate = selectedMonth < 12 ? new Date(selectedYear, selectedMonth, 15).toISOString() : '';
-    dispatch(GET_BUYS_REPORT(selectedDate));
-  }, [dispatch, selectedMonth, selectedYear]);
+  const calculateMargin = () => {
+    const margin = ((total_profit - total_import_expense) / total_import_sell) * 100;
+    const roundedMargin = Math.ceil(margin * 100) / 100;
+    return parseFloat(roundedMargin.toFixed(2));
+  }
 
-  const getSellsReport = useCallback(() => {
+  const getFullReports = useCallback(() => {
     const selectedDate = selectedMonth < 12 ? new Date(selectedYear, selectedMonth, 15).toISOString() : '';
-    dispatch(GET_SELLS_REPORT(selectedDate));
-  }, [dispatch, selectedMonth, selectedYear]);
-
-  const getExpensesReport = useCallback(() => {
-    const selectedDate = selectedMonth < 12 ? new Date(selectedYear, selectedMonth, 15).toISOString() : '';
-    dispatch(GET_EXPENSES_REPORT(selectedDate));
-  }, [dispatch, selectedMonth, selectedYear]);
-
-  const getUsersReport = useCallback(() => {
-    const selectedDate = selectedMonth < 12 ? new Date(selectedYear, selectedMonth, 15).toISOString() : '';
-    dispatch(GET_USERS_REPORT(selectedDate));
+    dispatch(GET_FULL_REPORTS(selectedDate));
   }, [dispatch, selectedMonth, selectedYear]);
 
   const getReports = useCallback(() => {
     const today = new Date().toISOString();
-    getBuysReport(today);
-    getSellsReport(today);
-    getExpensesReport(today);
-    getUsersReport();
-  }, [getBuysReport, getSellsReport, getUsersReport, getExpensesReport]);
+    getFullReports(today)
+  }, [getFullReports]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -79,7 +67,7 @@ export default function Reports() {
                 totalImportSell={total_import_sell}
                 totalProfit={total_profit}
                 totalExpenses={total_import_expense}
-                percentage={percentage}
+                percentage={calculateMargin()}
               />
             </Row>
           </Card.Body>
