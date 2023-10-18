@@ -49,6 +49,7 @@ export default function Expenses() {
           <Card.Title className="d-flex w-100 card-title m-0 p-1 justify-content-around h5">
             <p>Fecha</p>
             <p>Tipo</p>
+            <p>Total</p>
           </Card.Title>
         </Card>
         {!isLoading ? (
@@ -64,14 +65,16 @@ export default function Expenses() {
                             <h5>{formatDate(elem.date)}</h5>
                           </div>
                           <div className="col sell-header-col">
-                            <h5>${elem.type}</h5>
+                            <h5>{elem.type}</h5>
+                          </div>
+                          <div className="col sell-header-col">
+                            <h5>${elem.total}</h5>
                           </div>
                         </Accordion.Header>
                         <Accordion.Body>
                           <LazyComponent>
                             <div>
                               <p>{elem.description}</p>
-                              <p>{elem.total}</p>
                             </div>
                           </LazyComponent>
                         </Accordion.Body>

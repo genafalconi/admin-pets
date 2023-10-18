@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit"
-import { CHANGE_SUBPRODUCT_ACTIVE, CHANGE_SUBPRODUCT_HIGHLIGHT, CREATE_MANUALLY_BUY, CREATE_MANUALLY_CLIENT, CREATE_MANUALLY_EXPENSE, CREATE_MANUALLY_SELL, CREATE_PRODUCT, CREATE_SUBPRODUCT, GET_BUYS_REPORT, GET_CAROUSEL_ITEMS, GET_DELIVERY_BY_WEEK, GET_EXPENSES_REPORT, GET_ORDER_DETAILS, GET_PAGINATED_BUYS, GET_PAGINATED_EXPENSES, GET_PAGINATED_ORDERS, GET_PAGINATED_PRODUCTS, GET_PAGINATED_USERS, GET_PRODUCTS_SEARCH, GET_PRODUCTS_TYPES, GET_PRODUCTS_TO_ADD, GET_SELLS_REPORT, GET_SUBPRODUCT_DETAILS, GET_USERS_REPORT, LOGOUT, SEARCH_PRODUCTS, SEARCH_USERS, UPDATE_ORDER_DELIVER_STATUS, UPDATE_SUBPRODUCT, UPDATE_USER_NEXT_BUY, VERIFY_ADMIN_TOKEN, GET_USERS_REBUY_WEEK } from "./actions"
+import { CHANGE_SUBPRODUCT_ACTIVE, CHANGE_SUBPRODUCT_HIGHLIGHT, CREATE_MANUALLY_BUY, CREATE_MANUALLY_CLIENT, CREATE_MANUALLY_EXPENSE, CREATE_MANUALLY_SELL, CREATE_PRODUCT, CREATE_SUBPRODUCT, GET_CAROUSEL_ITEMS, GET_DELIVERY_BY_WEEK, GET_ORDER_DETAILS, GET_PAGINATED_BUYS, GET_PAGINATED_EXPENSES, GET_PAGINATED_ORDERS, GET_PAGINATED_PRODUCTS, GET_PAGINATED_USERS, GET_PRODUCTS_SEARCH, GET_PRODUCTS_TYPES, GET_PRODUCTS_TO_ADD, GET_SUBPRODUCT_DETAILS, LOGOUT, SEARCH_PRODUCTS, SEARCH_USERS, UPDATE_ORDER_DELIVER_STATUS, UPDATE_SUBPRODUCT, UPDATE_USER_NEXT_BUY, VERIFY_ADMIN_TOKEN, GET_USERS_REBUY_WEEK, GET_FULL_REPORTS } from "./actions"
 
 const initialState = {
     token: localStorage.getItem('token'),
@@ -90,25 +90,18 @@ export const adminReducer = createReducer(initialState, (builder) => {
     builder.addCase(UPDATE_SUBPRODUCT.fulfilled, (state, action) => {
         state.subproduct = action.payload
     })
-    builder.addCase(GET_BUYS_REPORT.fulfilled, (state, action) => {
-        state.buys = action.payload
-        state.total_import_buy = action.payload?.total_import
-        state.month_buy = action.payload?.month
-    })
-    builder.addCase(GET_EXPENSES_REPORT.fulfilled, (state, action) => {
-        state.expenses = action.payload
-        state.total_import_expense = action.payload?.total_import
-        state.month_buy = action.payload?.month
-    })
-    builder.addCase(GET_SELLS_REPORT.fulfilled, (state, action) => {
-        state.sells = action.payload?.movements
-        state.total_import_sell = action.payload?.total_import
-        state.month_sell = action.payload?.month
-        state.total_profit = action.payload?.total_profit
-        state.percentage = action.payload?.percentage
-    })
-    builder.addCase(GET_USERS_REPORT.fulfilled, (state, action) => {
-        state.users = action.payload
+    builder.addCase(GET_FULL_REPORTS.fulfilled, (state, action) => {
+        state.sells = action.payload?.sells?.movements
+        state.total_import_sell = action.payload?.sells?.total_import
+        state.month_sell = action.payload?.sells?.month
+        state.total_profit = action.payload?.sells?.total_profit
+        state.buys = action.payload?.buys
+        state.total_import_buy = action.payload?.buys?.total_import
+        state.month_buy = action.payload?.buys?.month
+        state.expenses = action.payload?.expenses
+        state.total_import_expense = action.payload?.expenses?.total_import
+        state.month_buy = action.payload?.expenses?.month
+        state.users = action.payload?.users
     })
     builder.addCase(GET_DELIVERY_BY_WEEK.fulfilled, (state, action) => {
         state.deliverys = action.payload?.deliverys

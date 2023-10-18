@@ -24,6 +24,12 @@ export default function ExpenseForm() {
   const inputDescription = useRef(null)
   const [isLoadingButton, setIsLoadingButton] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
+  const [expenseData, setExpenseData] = useState({
+    description: '',
+    total: 0,
+    date: getCurrentDate(),
+    type: ''
+  })
 
   const validationSchema = Yup.object().shape({
     description: Yup.string().required('Ingresa la descripcion'),
@@ -32,10 +38,9 @@ export default function ExpenseForm() {
     type: Yup.string().notOneOf([''], 'Selecciona el tipo').required('Selecciona el tipo')
   });
 
-
-  const handleCreateExpense = (values, { setSubmitting }) => {
+  const handleCreateExpense = () => {
     setIsLoadingButton(true)
-    dispatch(CREATE_MANUALLY_EXPENSE(values)).then((res) => {
+    dispatch(CREATE_MANUALLY_EXPENSE(expenseData)).then((res) => {
       if (res.payload) {
         Swal.fire({
           title: 'Gasto creado',
@@ -44,7 +49,6 @@ export default function ExpenseForm() {
         setIsLoadingButton(false)
       }
     })
-    setSubmitting(false);
   };
 
   return (
@@ -64,7 +68,6 @@ export default function ExpenseForm() {
         }}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          handleCreateExpense(values)
           resetForm();
         }}
       >
@@ -91,7 +94,7 @@ export default function ExpenseForm() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body className='modal-expense-body'>
-              <Form noValidate onSubmit={handleSubmit} className='expense-form'>
+              <Form noValidate className='expense-form'>
                 <Form.Group as={Row}>
                   <Form.Group as={Col}>
                     <Form.Label>Fecha</Form.Label>
@@ -102,6 +105,7 @@ export default function ExpenseForm() {
                         name="date"
                         value={values.date}
                         onChange={(e) => {
+                          setExpenseData((prevData) => ({ ...prevData, date: getCurrentDate(e.target.value) }))
                           setFieldValue('date', getCurrentDate(e.target.value))
                           handleChange(e)
                         }}
@@ -119,7 +123,11 @@ export default function ExpenseForm() {
                       <Form.Select
                         value={values.type}
                         name='type'
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          setExpenseData((prevData) => ({ ...prevData, type: e.target.value }))
+                          setFieldValue('type', e.target.value)
+                          handleChange(e)
+                        }}
                         isInvalid={touched.type && !!errors.type}
                       >
                         <option value='' disabled>Selecciona</option>
@@ -140,7 +148,11 @@ export default function ExpenseForm() {
                         placeholder="Monto"
                         name="total"
                         ref={inputDescription}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          setExpenseData((prevData) => ({ ...prevData, total: e.target.value }))
+                          setFieldValue('total', e.target.value)
+                          handleChange(e)
+                        }}
                         onBlur={handleBlur}
                         isInvalid={touched.total && !!errors.total}
                       />
@@ -158,7 +170,11 @@ export default function ExpenseForm() {
                       placeholder="Descripcion"
                       name="description"
                       ref={inputDescription}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        setExpenseData((prevData) => ({ ...prevData, description: e.target.value }))
+                        setFieldValue('description', e.target.value)
+                        handleChange(e)
+                      }}
                       onBlur={handleBlur}
                       isInvalid={touched.description && !!errors.description}
                     />
@@ -170,7 +186,7 @@ export default function ExpenseForm() {
               </Form>
             </Modal.Body>
             <Modal.Footer className='modal-expense-footer'>
-              <Button variant='success' type='submit' disabled={!isValid}>
+              <Button variant='success' disabled={!isValid} onClick={handleCreateExpense}>
                 {
                   isLoadingButton ? <Spinner animation="border" size="sm" />
                     : 'Cargar gasto'
