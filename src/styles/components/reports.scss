@@ -5,12 +5,38 @@
 
 .report {
   display: flex;
-  width: 100%;
+  width: 98%;
   gap: 2rem;
 }
 
 .report-card {
-  width: 48%;
+  .card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+}
+
+.first-col,
+.second-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.cashflow {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+
+  p {
+    font-size: 1.05rem;
+  }
+}
+
+.graphic {
+  height: fit-content;
 }
 
 .date-picker {

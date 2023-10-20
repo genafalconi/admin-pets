@@ -32,7 +32,10 @@ const initialState = {
     animal_size: [],
     product: {},
     subproducts: [],
-    products_finded: []
+    products_finded: [],
+    cash: 0,
+    bank: 0,
+    stock: []
 }
 
 export const adminReducer = createReducer(initialState, (builder) => {
@@ -102,6 +105,9 @@ export const adminReducer = createReducer(initialState, (builder) => {
         state.total_import_expense = action.payload?.expenses?.total_import
         state.month_buy = action.payload?.expenses?.month
         state.users = action.payload?.users
+        state.cash = action.payload?.cashflow?.cash
+        state.bank = action.payload?.cashflow?.bank
+        state.stock = action.payload?.stock
     })
     builder.addCase(GET_DELIVERY_BY_WEEK.fulfilled, (state, action) => {
         state.deliverys = action.payload?.deliverys

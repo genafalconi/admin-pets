@@ -14,7 +14,6 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
 
   const inputUser = useRef(null)
   const [userResults, setUserResults] = useState([]);
-  const [paymentType, setPaymentType] = useState(paymentsType.CASH);
 
   const getCurrentDate = (date) => {
     const now = date ? new Date(date) : new Date();
@@ -29,7 +28,7 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
     date: getCurrentDate(),
     user: '',
     address_id: '',
-    payment_type: paymentType
+    payment_type: ''
   })
 
   const validationSchema = yup.object().shape({
@@ -61,7 +60,7 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
       address_id: lastAddress
     }));
 
-    setSellFullData({ ...sellFullData, ...sellData, user: _id, address_id: lastAddress, payment_type: paymentType });
+    setSellFullData({ ...sellFullData, ...sellData, user: _id, address_id: lastAddress });
     setUserResults([]);
     inputUser.current.value = fullName;
   }
@@ -81,7 +80,7 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
         date: getCurrentDate(),
         user: '',
         address_id: '',
-        payment_type: paymentsType.CASH
+        payment_type: ''
       })
       if (inputUser.current) {
         inputUser.current.value = '';
@@ -173,8 +172,14 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
                 <Form.Group className='input-form-group'>
                   <Form.Select
                     className='select-payment'
-                    value={paymentType}
-                    onChange={(e) => setPaymentType(e.target.value)}
+                    value={values.movement_type}
+                    name='movement_type'
+                    onChange={(e) => {
+                      handleChange(e)
+                      setFieldValue('movement_type', e.target.value)
+                      setSellData((prevData) => ({ ...prevData, payment_type: e.target.value }))
+                      setSellFullData((prevData) => ({ ...prevData, payment_type: e.target.value }))
+                    }}
                   >
                     <option value={paymentsType.CASH}>CASH</option>
                     <option value={paymentsType.MP}>MP</option>
