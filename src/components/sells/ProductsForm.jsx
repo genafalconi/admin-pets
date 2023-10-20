@@ -63,10 +63,18 @@ export default function ProductForm({ sellFullData, setSellFullData, setValidPro
       buy_price: buy_price,
       profit: (price - buy_price) * quantity
     };
-    setSelectedProducts([...selectedProducts, newProduct]);
-    inputProduct.current.value = '';
 
-    const updatedProducts = [...selectedProducts, newProduct]
+    const existSubprod = selectedProducts.find((elem) => elem.subprod_id === newProduct.subprod_id)
+    const updatedProducts = [...selectedProducts]
+    if (existSubprod) {
+      existSubprod.quantity += newProduct.quantity
+      setSelectedProducts([...selectedProducts])
+    } else {
+      setSelectedProducts([...selectedProducts, newProduct]);
+      updatedProducts.push(newProduct)
+    }
+    inputProduct.current.value = '';
+    
     const total_products = updatedProducts.reduce((sum, product) => {
       const productPrice = product.quantity * (isSell ? product.sell_price : product.buy_price);
       return sum + productPrice;
@@ -170,7 +178,7 @@ export default function ProductForm({ sellFullData, setSellFullData, setValidPro
           )}
         </Formik>
         {
-          selectedProducts.length > 0 && <ProductsTable products={selectedProducts} totalProducts={totalProducts} isSell={true} />
+          selectedProducts.length > 0 && <ProductsTable products={selectedProducts} totalProducts={totalProducts} isSell={isSell} />
         }
       </Card.Body>
     </Card>

@@ -62,7 +62,8 @@ export default function Buys() {
                       ...subproduct.subproduct,
                       buy_price: subproduct.subproduct?.buy_price,
                       size: subproduct.subproduct?.size,
-                      quantity: subproduct.quantity
+                      quantity: subproduct.quantity,
+                      name: subproduct.subproduct?.product?.name
                     }));
 
                     return (

@@ -37,6 +37,7 @@ export const request = async (method, url, params, data, idtoken) => {
             localStorage.removeItem('token')
             localStorage.removeItem('user')
             localStorage.removeItem('user_auth')
+            window.location.reload()
           }
         })
     } else {
