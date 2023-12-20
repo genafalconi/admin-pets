@@ -28,7 +28,7 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
     date: getCurrentDate(),
     user: '',
     address_id: '',
-    payment_type: ''
+    payment_type: paymentsType.CASH
   })
 
   const validationSchema = yup.object().shape({
@@ -80,7 +80,7 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
         date: getCurrentDate(),
         user: '',
         address_id: '',
-        payment_type: ''
+        payment_type: paymentsType.CASH
       })
       if (inputUser.current) {
         inputUser.current.value = '';
