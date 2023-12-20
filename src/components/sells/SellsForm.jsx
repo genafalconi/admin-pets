@@ -96,7 +96,7 @@ export default function SellsForm({ sellFullData, setSellFullData, setValidSellF
         initialValues={{
           date: getCurrentDate(),
           user: '',
-          movement_type: ''
+          movement_type: paymentsType.CASH
         }}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
